@@ -1,7 +1,7 @@
 {
   "uuid": "ai-usage-monitor@thesalaty.github.io",
   "name": "Claude & Codex Usage",
-  "description": "Shows Claude Code and Codex usage limits, when they reset, and what the same traffic would have cost at API rates — with a per-model, per-skill and per-subagent breakdown. Detects which of the two CLIs is installed and works with either one alone.",
+  "description": "Claude Code and Codex limits in the top panel, plus where the spend went: what the same traffic would have cost at API rates, broken down per model, per skill, per subagent and per MCP tool. Reads the session files already on your machine — no helper CLI, no API key, nothing leaves the machine. Detects which of the two CLIs is installed and works with either one alone.",
   "shell-version": ["49", "50"],
   "settings-schema": "org.gnome.shell.extensions.ai-usage-monitor",
   "gettext-domain": "ai-usage-monitor",

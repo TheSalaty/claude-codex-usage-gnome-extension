@@ -5,9 +5,13 @@ description: See how much of your Claude Code and OpenAI Codex usage limits you 
 
 # Claude & Codex Usage
 
-A GNOME Shell extension that shows how much of your **Claude Code** and **OpenAI Codex** usage
-limits you have burned through, when they reset, and what the same traffic would have cost at API
-rates — right in the top panel.
+A GNOME Shell extension for **Claude Code** and **OpenAI Codex** that answers both questions from
+the top panel: how much of your limits is left, and **where the spend actually went** — what the
+same traffic would have cost at API rates, broken down per model, per skill, per subagent and per
+MCP tool.
+
+Every other panel extension in this space stops at the first question. This one is for when
+"73% used" is not the thing you wanted to know.
 
 Works with Claude Code alone, Codex alone, or both. Everything is read from the session files
 already on your machine; nothing is sent anywhere. Tested on GNOME 49 and 50, Wayland and X11,
@@ -43,12 +47,27 @@ gnome-extensions enable ai-usage-monitor@thesalaty.github.io
 
 ## Compared with the other usage extensions
 
-- **CodexBar / GodexBar** wrap the CodexBar CLI — another binary to install and keep current. This
-  reads the session files directly, no helper process.
-- **Provider Limits** shows limits and resets only. This adds the API-equivalent cost and the
-  per-model, per-skill and per-subagent breakdown behind it.
-- **Claude Code Usage**, **Claude Usage Panel** and similar cover Claude alone. This covers both
-  CLIs in one indicator, and stays useful with only one of them installed.
+There are a dozen of these now, so here is an honest table. Feature sets are from each project's
+own README, checked in August 2026.
+
+| | Claude | Codex | Limits & resets | Cost at API rates | Per model / skill / subagent | GNOME |
+|---|---|---|---|---|---|---|
+| **Claude & Codex Usage** (this) | ✅ | ✅ | ✅ | ✅ | ✅ | 49–50 |
+| [Brain Usage](https://github.com/AltairInglorious/brainusage) | ✅ | ✅ | ✅ | — | — | 45–49 |
+| [AI Usage Bar](https://github.com/wilfison/ai-usagebar) | ✅ | ✅ | ✅ | — | — | 50 |
+| [Claude + Codex Usage](https://github.com/IanBraga96/gnome-claude-codex-usage) | ✅ | ✅ | ✅ | — | — | 48–50 |
+| [Claude Monitor](https://github.com/CybrosysAssista/claude-monitor) | ✅ | ✅ | ✅ | — | — | 45–49 |
+| [AI Token Bars](https://github.com/fen22/gnome-shell-extension-ai-token-bars) | ✅ | ✅ | ✅ | — | — | 42 |
+| [claude-monitor](https://github.com/miferco97/claude-monitor-gnome-extension) | ✅ | — | ✅ | cost + burn rate | — | 48 |
+
+Where the others are ahead, so you can pick properly: **AI Usage Bar** covers four more vendors
+(Z.AI, OpenRouter, DeepSeek, Kimi). **Brain Usage** ships a KDE Plasma version and low-quota
+notifications. **Claude Monitor** has a macOS menu-bar app. If limits are all you need and you are
+on GNOME 45–48, those are the better fit — this one starts at 49.
+
+What is here and nowhere else is the second half of the question: cost at API list prices for the
+last 24h / 7d / 30d, what prompt caching saved, and the split across models, skills, subagents and
+MCP tools. No helper CLI, no daemon — it reads the session files directly.
 
 Source, settings and the pricing overrides:
 [github.com/TheSalaty/claude-codex-usage-gnome-extension](https://github.com/TheSalaty/claude-codex-usage-gnome-extension).
