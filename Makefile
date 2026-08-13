@@ -33,7 +33,7 @@ pack: schemas assets
 
 test:
 	npx tsc -p tsconfig.json
-	node --test build/tests/
+	node --test build/tests/*.test.js
 
 enable:
 	gnome-extensions enable $(UUID)
