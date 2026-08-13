@@ -1,4 +1,4 @@
-# Tripmeter — Claude Code & Codex usage and cost in the GNOME panel
+# Tripmeter Usage — Claude Code & Codex usage and cost in the GNOME panel
 
 A GNOME Shell extension for **Claude Code** and **OpenAI Codex** that answers both questions from
 the top panel: how much of your limits is left, and **where the spend actually went** — what the
@@ -45,11 +45,15 @@ npm install
 make install
 ```
 
-Then log out and back in — Wayland cannot reload the shell in place — and enable it:
+Enable it, then log out and back in — Wayland cannot reload the shell in place:
 
 ```sh
 gnome-extensions enable tripmeter@thesalaty.github.io
 ```
+
+The Arch package prints this command after installation and offers an **Enable Tripmeter** button
+in a GNOME notification after the next login. Once enabled, Tripmeter stays enabled across future
+logins and updates.
 
 `make pack` builds a `.shell-extension.zip` instead.
 

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Tripmeter activation reminder
+Exec=/usr/lib/tripmeter/remind-enable
+OnlyShowIn=GNOME;
+NoDisplay=true

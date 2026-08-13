@@ -1,16 +1,21 @@
 # Maintainer: TheSalaty <j.ullrich@creedle.io>
 _uuid=tripmeter@thesalaty.github.io
-pkgname=gnome-shell-extension-tripmeter
-pkgver=1.0.1
+pkgname=tripmeter
+pkgver=1.0.2
 pkgrel=1
-pkgdesc="GNOME Shell extension showing Claude Code and OpenAI Codex usage limits, resets and API-equivalent cost in the top panel"
+pkgdesc="Tripmeter Usage: AI usage tracker and Verbrauch monitor for Claude Code and OpenAI Codex — Claude/Codex usage and limits, token use, 5-hour/weekly quotas, resets and API cost"
 arch=('any')
 url="https://github.com/TheSalaty/tripmeter"
 license=('MIT')
-depends=('gnome-shell')
+depends=('gnome-shell>=1:49')
 makedepends=('npm' 'glib2-devel')
-source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
-sha256sums=('2170708548661cdee78ff8c9737cdf17e7d2b53aa79ac02bbcdc53821bab046e')
+install=tripmeter.install
+source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz"
+        'tripmeter-remind-enable'
+        'tripmeter-remind-enable.desktop')
+sha256sums=('2170708548661cdee78ff8c9737cdf17e7d2b53aa79ac02bbcdc53821bab046e'
+            '5cc0e150ce5d4caaea997337540bb57ce6b7965cf69a8611b5ff8f3fbcd78a10'
+            'adec82ff284b8f1e5dd047fd39d150676e0c7e55146b37259d7c2d6368994ed3')
 
 _srcdir="tripmeter-$pkgver"
 
@@ -36,4 +41,6 @@ package() {
   cp -r build/src/. "$pkgdir/usr/share/gnome-shell/extensions/$_uuid/"
   install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+  install -Dm755 "$srcdir/tripmeter-remind-enable" "$pkgdir/usr/lib/tripmeter/remind-enable"
+  install -Dm644 "$srcdir/tripmeter-remind-enable.desktop" "$pkgdir/etc/xdg/autostart/tripmeter-remind-enable.desktop"
 }
