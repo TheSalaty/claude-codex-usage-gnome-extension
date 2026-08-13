@@ -8,7 +8,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "watch": "tsc -p tsconfig.json --watch",
-    "test": "npm run build && node --test build/tests/",
+    "test": "tsc -p tsconfig.tests.json && node --test build/tests/*.test.js",
     "lint": "tsc -p tsconfig.json --noEmit",
     "install-extension": "make install",
     "pack": "make pack"

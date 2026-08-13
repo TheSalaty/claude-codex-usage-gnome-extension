@@ -33,7 +33,7 @@ pack: schemas assets
 	@echo "Wrote $(UUID).shell-extension.zip"
 
 test:
-	npx tsc -p tsconfig.json
+	npx tsc -p tsconfig.tests.json
 	node --test build/tests/*.test.js
 
 enable:
