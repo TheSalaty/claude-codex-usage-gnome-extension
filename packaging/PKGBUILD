@@ -1,7 +1,7 @@
 # Maintainer: TheSalaty <j.ullrich@creedle.io>
 _uuid=tripmeter@thesalaty.github.io
 pkgname=gnome-shell-extension-tripmeter
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 pkgdesc="GNOME Shell extension showing Claude Code and OpenAI Codex usage limits, resets and API-equivalent cost in the top panel"
 arch=('any')
@@ -10,7 +10,7 @@ license=('MIT')
 depends=('gnome-shell')
 makedepends=('npm' 'glib2-devel')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
-sha256sums=('SKIP')
+sha256sums=('068877096882964420a1b0776640f9afdcdbb9e58cc28a4894db173f23e1353f')
 
 _srcdir="tripmeter-$pkgver"
 

@@ -6,5 +6,5 @@
   "settings-schema": "org.gnome.shell.extensions.tripmeter",
   "gettext-domain": "tripmeter",
   "url": "https://github.com/TheSalaty/tripmeter",
-  "version-name": "1.0.0"
+  "version-name": "1.0.1"
 }
