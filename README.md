@@ -26,8 +26,7 @@ Tested on GNOME 49 and 50, Wayland and X11, Arch/Manjaro, Fedora and Ubuntu.
 ## Install
 
 Needs GNOME Shell 49 or 50. Grab the zip from the
-[latest release](https://github.com/TheSalaty/claude-codex-usage-gnome-extension/releases/latest) —
-no build toolchain:
+[latest release](https://github.com/TheSalaty/claude-codex-usage-gnome-extension/releases/latest):
 
 ```sh
 gnome-extensions install --force ai-usage-monitor@thesalaty.github.io.shell-extension.zip
