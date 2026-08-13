@@ -1,4 +1,4 @@
-UUID    := ai-usage-monitor@thesalaty.github.io
+UUID    := claudex-usage@thesalaty.github.io
 BUILD   := build/src
 TARGET  := $(HOME)/.local/share/gnome-shell/extensions/$(UUID)
 
@@ -9,7 +9,10 @@ all: build
 build:
 	npx tsc -p tsconfig.json
 
+# Wiped rather than topped up: a renamed schema would otherwise leave its old file behind to be
+# compiled into the same gschemas.compiled and shipped.
 schemas: build
+	rm -rf $(BUILD)/schemas
 	mkdir -p $(BUILD)/schemas
 	cp src/schemas/*.gschema.xml $(BUILD)/schemas/
 	glib-compile-schemas $(BUILD)/schemas
