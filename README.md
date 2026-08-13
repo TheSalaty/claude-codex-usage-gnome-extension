@@ -1,4 +1,4 @@
-# AI Usage Monitor — Claude Code & Codex usage in the GNOME panel
+# Claude & Codex Usage — a GNOME Shell extension for your Claude Code and Codex limits
 
 A GNOME Shell extension that shows how much of your **Claude Code** and **OpenAI Codex** usage
 limits you have burned through, when they reset, and what the same traffic would have cost at API
@@ -7,8 +7,10 @@ rates — right in the top panel.
 Works with Claude Code alone, Codex alone, or both. Everything is read from the session files
 already on your machine; nothing is sent anywhere.
 
+Tested on GNOME 49 and 50, Wayland and X11, Arch/Manjaro, Fedora and Ubuntu.
+
 <p align="center">
-  <img src="docs/menu.png" alt="The AI Usage Monitor menu showing Claude Code and Codex limits, resets and cost" width="420">
+  <img src="docs/menu.png" alt="The Claude &amp; Codex Usage menu showing Claude Code and Codex limits, resets and cost" width="420">
 </p>
 
 ## What it shows
@@ -68,6 +70,15 @@ matching model-id prefix wins:
   showing cost; start Claude Code once and it refreshes itself.
 - **Codex has no usage endpoint.** Its limits come from the snapshot in the last session it ran, so
   the menu labels them with their age. Run Codex and they update.
+
+## Compared with the other usage extensions
+
+- **CodexBar / GodexBar** wrap the CodexBar CLI — another binary to install and keep current. This
+  reads the session files directly, no helper process.
+- **Provider Limits** shows limits and resets only. This adds the API-equivalent cost and the
+  per-model, per-skill and per-subagent breakdown behind it.
+- **Claude Code Usage**, **Claude Usage Panel** and similar cover Claude alone. This covers both
+  CLIs in one indicator, and stays useful with only one of them installed.
 
 Building on this? See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
