@@ -11,7 +11,7 @@ import { addToPanel, createIndicator, type UsageIndicatorInstance } from './ui/i
 /** A menu that was just opened refreshes only if the data is older than this. */
 const STALE_AFTER_SECONDS = 45
 
-export default class AiUsageMonitorExtension extends Extension {
+export default class ClaudexUsageExtension extends Extension {
   private indicator: UsageIndicatorInstance | null = null
   private runner: CollectorRunner | null = null
   private settings: Gio.Settings | null = null

@@ -7,7 +7,7 @@ import { claudeInstalled, collectClaude } from './claude.js'
 import { codexInstalled, collectCodex } from './codex.js'
 import { readJsonFile } from './io.js'
 
-const CONFIG_DIR = 'ai-usage-monitor'
+const CONFIG_DIR = 'claudex-usage'
 
 const parseWindow = (argv: string[]): WindowDays => {
   const index = argv.indexOf('--window')

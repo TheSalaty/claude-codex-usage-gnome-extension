@@ -4,7 +4,7 @@ import GLib from 'gi://GLib'
 import { isSnapshot } from './lib/snapshot.js'
 import type { Snapshot, WindowDays } from './lib/types.js'
 
-const CACHE_DIR = 'ai-usage-monitor'
+const CACHE_DIR = 'claudex-usage'
 
 export type RunResult =
   | { ok: true; snapshot: Snapshot }

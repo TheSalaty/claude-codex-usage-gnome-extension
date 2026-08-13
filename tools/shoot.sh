@@ -10,7 +10,7 @@
 #
 # Screenshots land in /tmp/aiu-shots/.
 set -u
-UUID=ai-usage-monitor@thesalaty.github.io
+UUID=claudex-usage@thesalaty.github.io
 HERE=$(cd "$(dirname "$0")" && pwd)
 SANDBOX=${AIU_SANDBOX:-/tmp/aiu-home}
 

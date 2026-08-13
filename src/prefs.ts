@@ -5,7 +5,7 @@ import Gtk from 'gi://Gtk'
 
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js'
 
-export default class AiUsageMonitorPreferences extends ExtensionPreferences {
+export default class ClaudexUsagePreferences extends ExtensionPreferences {
   override fillPreferencesWindow(window: Adw.PreferencesWindow): Promise<void> {
     const settings = this.getSettings()
 
@@ -71,7 +71,7 @@ export default class AiUsageMonitorPreferences extends ExtensionPreferences {
       description:
         'Costs are what the same traffic would have cost at API list prices — subscriptions ' +
         'are flat-rate, so nothing here is a bill. Override the built-in price list by creating ' +
-        `${GLib.build_filenamev([GLib.get_user_config_dir(), 'ai-usage-monitor', 'pricing.json'])}.`,
+        `${GLib.build_filenamev([GLib.get_user_config_dir(), 'claudex-usage', 'pricing.json'])}.`,
     })
     page.add(pricing)
 

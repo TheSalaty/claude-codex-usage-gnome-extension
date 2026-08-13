@@ -1,6 +1,6 @@
 # Maintainer: TheSalaty <j.ullrich@creedle.io>
-_uuid=ai-usage-monitor@thesalaty.github.io
-pkgname=gnome-shell-extension-claude-codex-usage
+_uuid=claudex-usage@thesalaty.github.io
+pkgname=gnome-shell-extension-claudex-usage
 pkgver=1.0.0
 pkgrel=1
 pkgdesc="GNOME Shell extension showing Claude Code and OpenAI Codex usage limits, resets and API-equivalent cost in the top panel"

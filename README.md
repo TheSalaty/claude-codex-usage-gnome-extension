@@ -1,4 +1,4 @@
-# Claude & Codex Usage — a GNOME Shell extension for your Claude Code and Codex limits
+# Claudex Usage — Claude Code & Codex usage and cost in the GNOME panel
 
 A GNOME Shell extension for **Claude Code** and **OpenAI Codex** that answers both questions from
 the top panel: how much of your limits is left, and **where the spend actually went** — what the
@@ -14,7 +14,7 @@ already on your machine; nothing is sent anywhere.
 Tested on GNOME 49 and 50, Wayland and X11, Arch/Manjaro, Fedora and Ubuntu.
 
 <p align="center">
-  <img src="docs/menu.png" alt="The Claude &amp; Codex Usage menu showing Claude Code and Codex limits, resets and cost" width="420">
+  <img src="docs/menu.png" alt="The Claudex Usage menu showing Claude Code and Codex limits, resets and cost" width="420">
 </p>
 
 ## What it shows
@@ -33,7 +33,7 @@ Needs GNOME Shell 49 or 50. Grab the zip from the
 [latest release](https://github.com/TheSalaty/claude-codex-usage-gnome-extension/releases/latest):
 
 ```sh
-gnome-extensions install --force ai-usage-monitor@thesalaty.github.io.shell-extension.zip
+gnome-extensions install --force claudex-usage@thesalaty.github.io.shell-extension.zip
 ```
 
 Or from source, which needs Node 20+:
@@ -48,14 +48,14 @@ make install
 Then log out and back in — Wayland cannot reload the shell in place — and enable it:
 
 ```sh
-gnome-extensions enable ai-usage-monitor@thesalaty.github.io
+gnome-extensions enable claudex-usage@thesalaty.github.io
 ```
 
 `make pack` builds a `.shell-extension.zip` instead.
 
 ## Settings
 
-Open with the gear in the menu, or `gnome-extensions prefs ai-usage-monitor@thesalaty.github.io`.
+Open with the gear in the menu, or `gnome-extensions prefs claudex-usage@thesalaty.github.io`.
 
 | | |
 |---|---|
@@ -65,7 +65,7 @@ Open with the gear in the menu, or `gnome-extensions prefs ai-usage-monitor@thes
 | **Refresh interval** | 60–3600 seconds between collections |
 
 Prices come from a built-in list ([`src/lib/pricing.ts`](src/lib/pricing.ts), USD per million
-tokens). Override any model by creating `~/.config/ai-usage-monitor/pricing.json` — the longest
+tokens). Override any model by creating `~/.config/claudex-usage/pricing.json` — the longest
 matching model-id prefix wins:
 
 ```json
@@ -89,7 +89,7 @@ own README, checked in August 2026.
 
 | | Claude | Codex | Limits & resets | Cost at API rates | Per model / skill / subagent | GNOME |
 |---|---|---|---|---|---|---|
-| **Claude & Codex Usage** (this) | ✅ | ✅ | ✅ | ✅ | ✅ | 49–50 |
+| **Claudex Usage** (this) | ✅ | ✅ | ✅ | ✅ | ✅ | 49–50 |
 | [Brain Usage](https://github.com/AltairInglorious/brainusage) | ✅ | ✅ | ✅ | — | — | 45–49 |
 | [AI Usage Bar](https://github.com/wilfison/ai-usagebar) | ✅ | ✅ | ✅ | — | — | 50 |
 | [Claude + Codex Usage](https://github.com/IanBraga96/gnome-claude-codex-usage) | ✅ | ✅ | ✅ | — | — | 48–50 |

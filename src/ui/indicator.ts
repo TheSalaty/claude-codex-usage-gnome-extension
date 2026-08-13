@@ -75,7 +75,7 @@ export const UsageIndicator = GObject.registerClass(
     }
 
     constructor(handlers: IndicatorHandlers) {
-      super(0.5, 'Claude & Codex Usage', false)
+      super(0.5, 'Claudex Usage', false)
       this.handlers = handlers
 
       const box = new St.BoxLayout({ style_class: 'panel-status-menu-box' })

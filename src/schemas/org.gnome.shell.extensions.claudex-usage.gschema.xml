@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="ai-usage-monitor">
-  <enum id="org.gnome.shell.extensions.ai-usage-monitor.panel-mode">
+<schemalist gettext-domain="claudex-usage">
+  <enum id="org.gnome.shell.extensions.claudex-usage.panel-mode">
     <value nick="percent" value="0"/>
     <value nick="cost" value="1"/>
     <value nick="icon" value="2"/>
   </enum>
-  <enum id="org.gnome.shell.extensions.ai-usage-monitor.panel-limit-source">
+  <enum id="org.gnome.shell.extensions.claudex-usage.panel-limit-source">
     <value nick="both" value="0"/>
     <value nick="claude" value="1"/>
     <value nick="codex" value="2"/>
   </enum>
 
-  <schema id="org.gnome.shell.extensions.ai-usage-monitor"
-          path="/org/gnome/shell/extensions/ai-usage-monitor/">
+  <schema id="org.gnome.shell.extensions.claudex-usage"
+          path="/org/gnome/shell/extensions/claudex-usage/">
     <key name="refresh-interval" type="i">
       <default>300</default>
       <range min="60" max="3600"/>
@@ -24,12 +24,12 @@
       <summary>Cost window in days</summary>
       <description>The period the cost breakdown covers: 1, 7 or 30 days.</description>
     </key>
-    <key name="panel-mode" enum="org.gnome.shell.extensions.ai-usage-monitor.panel-mode">
+    <key name="panel-mode" enum="org.gnome.shell.extensions.claudex-usage.panel-mode">
       <default>'percent'</default>
       <summary>What the panel button shows</summary>
       <description>Either the tightest limit's percentage, the window's cost, or the icon alone.</description>
     </key>
-    <key name="panel-limit-source" enum="org.gnome.shell.extensions.ai-usage-monitor.panel-limit-source">
+    <key name="panel-limit-source" enum="org.gnome.shell.extensions.claudex-usage.panel-limit-source">
       <default>'both'</default>
       <summary>Which providers' limits the panel shows</summary>
       <description>Show Claude, Codex, or both when the panel mode is Limit percentage.</description>
