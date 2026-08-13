@@ -5,6 +5,6 @@
   "shell-version": ["49", "50"],
   "settings-schema": "org.gnome.shell.extensions.ai-usage-monitor",
   "gettext-domain": "ai-usage-monitor",
-  "url": "https://github.com/TheSalaty/codex-usage-gnome-extension",
+  "url": "https://github.com/TheSalaty/claude-codex-usage-gnome-extension",
   "version-name": "1.0.0"
 }
