@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thesalaty.github.io/claude-codex-usage-gnome-extension/sitemap.xml

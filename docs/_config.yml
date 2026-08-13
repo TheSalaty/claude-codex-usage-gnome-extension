@@ -1,9 +1,0 @@
-theme: jekyll-theme-minimal
-title: Claude & Codex Usage
-description: >-
-  A GNOME Shell extension that shows your Claude Code and OpenAI Codex usage
-  limits, when they reset, and what the same traffic would have cost at API rates
-  — in the GNOME top panel.
-show_downloads: false
-exclude:
-  - DEVELOPMENT.md

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claudex Usage — Claude Code &amp; Codex usage and cost in the GNOME panel</title>
+<meta name="description" content="A GNOME Shell extension showing your Claude Code and OpenAI Codex usage limits, when they reset, and what the same traffic would have cost at API rates — per model, per skill, per subagent and per MCP tool.">
+<link rel="canonical" href="https://thesalaty.github.io/claude-codex-usage-gnome-extension/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Claudex Usage — Claude Code &amp; Codex usage and cost in the GNOME panel">
+<meta property="og:description" content="GNOME Shell extension for Claude Code and OpenAI Codex: usage limits, resets, and what the traffic would have cost at API rates.">
+<meta property="og:image" content="https://thesalaty.github.io/claude-codex-usage-gnome-extension/menu.png">
+<meta property="og:url" content="https://thesalaty.github.io/claude-codex-usage-gnome-extension/">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Claudex Usage",
+  "alternateName": "Claude & Codex Usage for GNOME",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, GNOME Shell 49-50",
+  "description": "A GNOME Shell extension showing Claude Code and OpenAI Codex usage limits, when they reset, and what the same traffic would have cost at API rates, broken down per model, per skill, per subagent and per MCP tool.",
+  "softwareVersion": "1.0.0",
+  "url": "https://thesalaty.github.io/claude-codex-usage-gnome-extension/",
+  "downloadUrl": "https://github.com/TheSalaty/claude-codex-usage-gnome-extension/releases/latest",
+  "codeRepository": "https://github.com/TheSalaty/claude-codex-usage-gnome-extension",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": { "@type": "Person", "name": "TheSalaty" },
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<style>
+  :root {
+    color-scheme: light dark;
+    --fg: #1b1b1f;
+    --dim: #5d5d68;
+    --bg: #fdfdfd;
+    --line: #e2e2e6;
+    --accent: #7a3ba8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg: #e6e6ea; --dim: #a0a0ab; --bg: #17171b; --line: #2f2f36; --accent: #c39bea; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0 auto;
+    padding: 3rem 1.25rem 5rem;
+    max-width: 46rem;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Cantarell, sans-serif;
+  }
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 .25rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.15rem; margin: 2.75rem 0 .75rem; letter-spacing: -.01em; }
+  .lede { color: var(--dim); font-size: 1.05rem; margin: 0 0 2rem; }
+  a { color: var(--accent); }
+  img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; }
+  ul { padding-left: 1.15rem; }
+  li { margin: .4rem 0; }
+  pre {
+    background: color-mix(in srgb, var(--fg) 6%, transparent);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: .8rem 1rem;
+    overflow-x: auto;
+    font-size: .875rem;
+  }
+  code { font-family: ui-monospace, "Cascadia Code", Menlo, monospace; }
+  /* Seven columns do not fit a phone, so the table scrolls rather than the page. */
+  .scroll-x { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; font-size: .875rem; }
+  th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, td:first-child { white-space: normal; }
+  th { color: var(--dim); font-weight: 600; }
+  .note { color: var(--dim); font-size: .9rem; }
+  footer { margin-top: 3.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--dim); font-size: .9rem; }
+</style>
+</head>
+<body>
+
+<h1>Claudex Usage</h1>
+<p class="lede">A GNOME Shell extension for <strong>Claude Code</strong> and <strong>OpenAI Codex</strong>
+that answers both questions from the top panel: how much of your limits is left, and
+<strong>where the spend actually went</strong> — what the same traffic would have cost at API rates,
+broken down per model, per skill, per subagent and per MCP tool.</p>
+
+<p>Every other panel extension in this space stops at the first question. This one is for when
+&ldquo;73% used&rdquo; is not the thing you wanted to know.</p>
+
+<p>Works with Claude Code alone, Codex alone, or both. Everything is read from the session files
+already on your machine; nothing is sent anywhere. Tested on GNOME 49 and 50, Wayland and X11,
+Arch/Manjaro, Fedora and Ubuntu.</p>
+
+<p><img src="menu.png" alt="The Claudex Usage menu showing Claude Code and Codex limits, resets and cost at API rates" width="420"></p>
+
+<h2>What it shows</h2>
+<ul>
+  <li><strong>Limits</strong> — every rolling limit with a bar: Claude's 5-hour session, weekly and
+    weekly-Opus quota, Codex's 5-hour and weekly quota. The same figures <code>/usage</code> reports
+    inside Claude Code.</li>
+  <li><strong>Resets</strong> — how long until each limit refills.</li>
+  <li><strong>Cost at API rates</strong> — what the last 24 hours / 7 days / 30 days would have cost
+    at API list prices, plus what prompt caching saved. A subscription is flat-rate, so this is not
+    a bill.</li>
+  <li><strong>Where it went</strong> — cost per model, and the share spent under each skill,
+    subagent and MCP tool.</li>
+  <li><strong>In the panel</strong> — the tightest limit's percentage, the window's cost, or just
+    the icon.</li>
+</ul>
+
+<h2>Install</h2>
+<p>Needs GNOME Shell 49 or 50. Download the zip from the
+<a href="https://github.com/TheSalaty/claude-codex-usage-gnome-extension/releases/latest">latest release</a>, then:</p>
+<pre><code>gnome-extensions install --force claudex-usage@thesalaty.github.io.shell-extension.zip</code></pre>
+<p>Log out and back in — Wayland cannot reload the shell in place — and enable it:</p>
+<pre><code>gnome-extensions enable claudex-usage@thesalaty.github.io</code></pre>
+
+<h2>Compared with the other usage extensions</h2>
+<p class="note">There are a dozen of these now, so here is an honest table. Feature sets are from
+each project's own README, checked in August 2026.</p>
+<div class="scroll-x">
+<table>
+  <thead>
+    <tr><th></th><th>Claude</th><th>Codex</th><th>Limits</th><th>Cost at API rates</th><th>Per model / skill</th><th>GNOME</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Claudex Usage</strong></td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>49–50</td></tr>
+    <tr><td><a href="https://github.com/AltairInglorious/brainusage">Brain Usage</a></td><td>yes</td><td>yes</td><td>yes</td><td>—</td><td>—</td><td>45–49</td></tr>
+    <tr><td><a href="https://github.com/wilfison/ai-usagebar">AI Usage Bar</a></td><td>yes</td><td>yes</td><td>yes</td><td>—</td><td>—</td><td>50</td></tr>
+    <tr><td><a href="https://github.com/IanBraga96/gnome-claude-codex-usage">Claude + Codex Usage</a></td><td>yes</td><td>yes</td><td>yes</td><td>—</td><td>—</td><td>48–50</td></tr>
+    <tr><td><a href="https://github.com/CybrosysAssista/claude-monitor">Claude Monitor</a></td><td>yes</td><td>yes</td><td>yes</td><td>—</td><td>—</td><td>45–49</td></tr>
+    <tr><td><a href="https://github.com/fen22/gnome-shell-extension-ai-token-bars">AI Token Bars</a></td><td>yes</td><td>yes</td><td>yes</td><td>—</td><td>—</td><td>42</td></tr>
+    <tr><td><a href="https://github.com/miferco97/claude-monitor-gnome-extension">claude-monitor</a></td><td>yes</td><td>—</td><td>yes</td><td>cost + burn rate</td><td>—</td><td>48</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Where the others are ahead, so you can pick properly: <strong>AI Usage Bar</strong> covers four
+more vendors (Z.AI, OpenRouter, DeepSeek, Kimi). <strong>Brain Usage</strong> ships a KDE Plasma
+version and low-quota notifications. <strong>Claude Monitor</strong> has a macOS menu-bar app. If
+limits are all you need and you are on GNOME 45–48, those are the better fit — this one starts
+at 49.</p>
+<p>What is here and nowhere else is the second half of the question: cost at API list prices for the
+last 24h / 7d / 30d, what prompt caching saved, and the split across models, skills, subagents and
+MCP tools. No helper CLI, no daemon — it reads the session files directly.</p>
+
+<footer>
+Source, settings and the pricing overrides:
+<a href="https://github.com/TheSalaty/claude-codex-usage-gnome-extension">github.com/TheSalaty/claude-codex-usage-gnome-extension</a>. MIT licensed.
+</footer>
+
+</body>
+</html>
