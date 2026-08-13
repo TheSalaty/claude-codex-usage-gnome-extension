@@ -85,7 +85,8 @@ matching model-id prefix wins:
 ## Compared with the other usage extensions
 
 There are a dozen of these now, so here is an honest table. Feature sets are from each project's
-own README, checked in August 2026.
+own README, checked in August 2026 — a dash means the README does not claim it, not that the
+project cannot do it, and any of these may have moved on since. Corrections welcome as an issue.
 
 | | Claude | Codex | Limits & resets | Cost at API rates | Per model / skill / subagent | GNOME |
 |---|---|---|---|---|---|---|
@@ -99,9 +100,10 @@ own README, checked in August 2026.
 | [CodexBar](https://github.com/steipete/CodexBar) wrappers | ✅ | ✅ | ✅ | some | — | varies |
 
 Where the others are ahead, so you can pick properly: **AI Usage Bar** covers four more vendors
-(Z.AI, OpenRouter, DeepSeek, Kimi). **Brain Usage** ships a KDE Plasma version and low-quota
-notifications. **Claude Monitor** has a macOS menu-bar app. If limits are all you need and you are
-on GNOME 45–48, those are the better fit — this one starts at 49.
+(Z.AI, OpenRouter, DeepSeek, Kimi) and shows credit balances for the API-key ones — money, just
+not the cost-of-your-own-traffic kind this column means. **Brain Usage** ships a KDE Plasma version
+and low-quota notifications. **Claude Monitor** has a macOS menu-bar app. If limits are all you
+need and you are on GNOME 45–48, those are the better fit — this one starts at 49.
 
 What is here and nowhere else is the second half of the question: cost at API list prices for the
 last 24h / 7d / 30d, what prompt caching saved, and the split across models, skills, subagents and
@@ -112,4 +114,8 @@ Building on this? See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## Licence
 
-MIT
+MIT.
+
+An independent project, not affiliated with or endorsed by Anthropic or OpenAI. Claude and Claude
+Code are trademarks of Anthropic; Codex is a trademark of OpenAI. Other projects are named to
+identify them, and each is linked to its own repository.
