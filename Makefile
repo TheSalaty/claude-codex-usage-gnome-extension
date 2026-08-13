@@ -16,6 +16,7 @@ schemas: build
 
 assets: build
 	cp src/metadata.json src/stylesheet.css $(BUILD)/
+	cp -r src/icons $(BUILD)/
 
 install: schemas assets
 	rm -rf $(TARGET)

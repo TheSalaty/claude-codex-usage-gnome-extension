@@ -1,4 +1,5 @@
 import Clutter from 'gi://Clutter'
+import Gio from 'gi://Gio'
 import GObject from 'gi://GObject'
 import St from 'gi://St'
 
@@ -15,8 +16,14 @@ import {
   formatTokens,
   formatUsd,
 } from '../lib/format.js'
-import { severityFor, tightestLimit, totalUsd } from '../lib/snapshot.js'
-import { totalTokens, type Provider, type Snapshot, type WindowDays } from '../lib/types.js'
+import { panelLimits, severityFor, totalUsd } from '../lib/snapshot.js'
+import {
+  totalTokens,
+  type PanelLimitSource,
+  type Provider,
+  type Snapshot,
+  type WindowDays,
+} from '../lib/types.js'
 import { attributionRows, choiceRow, keyValue, limitRow, note, sectionHeader } from './rows.js'
 
 const WINDOW_CHOICES: readonly { value: WindowDays; label: string }[] = [
@@ -24,6 +31,8 @@ const WINDOW_CHOICES: readonly { value: WindowDays; label: string }[] = [
   { value: 7, label: '7 days' },
   { value: 30, label: '30 days' },
 ]
+
+const ICONS_URI = import.meta.url.replace('/ui/indicator.js', '/icons/')
 
 export type IndicatorHandlers = {
   onRefresh: () => void
@@ -35,6 +44,7 @@ type State = {
   snapshot: Snapshot | null
   windowDays: WindowDays
   panelMode: string
+  panelLimitSource: PanelLimitSource
   busy: boolean
   error: string | null
 }
@@ -42,11 +52,16 @@ type State = {
 export const UsageIndicator = GObject.registerClass(
   class UsageIndicator extends PanelMenu.Button {
     private label!: St.Label
+    private claudeIcon!: St.Icon
+    private claudeLabel!: St.Label
+    private codexIcon!: St.Icon
+    private codexLabel!: St.Label
     private handlers!: IndicatorHandlers
     private state: State = {
       snapshot: null,
       windowDays: 7,
       panelMode: 'percent',
+      panelLimitSource: 'both',
       busy: false,
       error: null,
     }
@@ -56,12 +71,14 @@ export const UsageIndicator = GObject.registerClass(
       this.handlers = handlers
 
       const box = new St.BoxLayout({ style_class: 'panel-status-menu-box' })
-      box.add_child(
-        new St.Icon({
-          icon_name: 'utilities-system-monitor-symbolic',
-          style_class: 'system-status-icon',
-        }),
-      )
+      this.claudeIcon = this.providerIcon('claude')
+      box.add_child(this.claudeIcon)
+      this.claudeLabel = this.providerLabel()
+      box.add_child(this.claudeLabel)
+      this.codexIcon = this.providerIcon('codex')
+      box.add_child(this.codexIcon)
+      this.codexLabel = this.providerLabel()
+      box.add_child(this.codexLabel)
       this.label = new St.Label({
         text: '…',
         y_align: Clutter.ActorAlign.CENTER,
@@ -86,9 +103,10 @@ export const UsageIndicator = GObject.registerClass(
       this.rebuild()
     }
 
-    setSettings(windowDays: WindowDays, panelMode: string): void {
+    setSettings(windowDays: WindowDays, panelMode: string, panelLimitSource: PanelLimitSource): void {
       this.state.windowDays = windowDays
       this.state.panelMode = panelMode
+      this.state.panelLimitSource = panelLimitSource
       this.rebuild()
     }
 
@@ -270,25 +288,66 @@ export const UsageIndicator = GObject.registerClass(
     private updatePanel(): void {
       const snapshot = this.state.snapshot
       if (this.state.panelMode === 'icon' || snapshot === null) {
-        this.label.visible = false
+        this.setProviderLabelsVisible(false, false)
+        this.label.visible = this.state.panelMode === 'icon'
+        this.label.text = '…'
         return
       }
 
       if (this.state.panelMode === 'cost') {
+        this.setProviderLabelsVisible(false, false)
         this.label.text = formatUsd(totalUsd(snapshot))
         this.label.visible = true
         this.setLabelSeverity('normal')
         return
       }
 
-      const tightest = tightestLimit(snapshot)
-      if (tightest === null) {
+      const limits = panelLimits(snapshot, this.state.panelLimitSource)
+      if (limits.length === 0) {
+        this.setProviderLabelsVisible(false, false)
         this.label.visible = false
         return
       }
-      this.label.text = formatPercent(tightest.limit.percent)
-      this.label.visible = true
-      this.setLabelSeverity(severityFor(tightest.limit.percent))
+      const claude = limits.find(({ provider }) => provider.id === 'claude')
+      const codex = limits.find(({ provider }) => provider.id === 'codex')
+      this.setProviderLabelsVisible(claude !== undefined, codex !== undefined)
+      if (claude !== undefined) this.setProviderLabel(this.claudeLabel, claude.limit.percent)
+      if (codex !== undefined) this.setProviderLabel(this.codexLabel, codex.limit.percent)
+      this.label.visible = false
+    }
+
+    /**
+     * The `-symbolic.svg` suffix is what makes the shell recolour the icon to the current
+     * foreground colour, so it follows the panel text through light and dark themes.
+     */
+    private providerIcon(provider: 'claude' | 'codex'): St.Icon {
+      const icon = new St.Icon({
+        gicon: new Gio.FileIcon({
+          file: Gio.File.new_for_uri(`${ICONS_URI}${provider}-symbolic.svg`),
+        }),
+        icon_size: 16,
+        style_class: 'aiu-provider-icon',
+      })
+      icon.visible = false
+      return icon
+    }
+
+    private providerLabel(): St.Label {
+      const label = new St.Label({ y_align: Clutter.ActorAlign.CENTER, style_class: 'aiu-panel-label' })
+      label.visible = false
+      return label
+    }
+
+    private setProviderLabelsVisible(claude: boolean, codex: boolean): void {
+      this.claudeIcon.visible = claude
+      this.claudeLabel.visible = claude
+      this.codexIcon.visible = codex
+      this.codexLabel.visible = codex
+    }
+
+    private setProviderLabel(label: St.Label, percent: number): void {
+      label.text = formatPercent(percent)
+      label.style_class = `aiu-panel-label aiu-panel-${severityFor(percent)}`
     }
 
     private setLabelSeverity(severity: string): void {

@@ -5,6 +5,11 @@
     <value nick="cost" value="1"/>
     <value nick="icon" value="2"/>
   </enum>
+  <enum id="org.gnome.shell.extensions.ai-usage-monitor.panel-limit-source">
+    <value nick="both" value="0"/>
+    <value nick="claude" value="1"/>
+    <value nick="codex" value="2"/>
+  </enum>
 
   <schema id="org.gnome.shell.extensions.ai-usage-monitor"
           path="/org/gnome/shell/extensions/ai-usage-monitor/">
@@ -23,6 +28,11 @@
       <default>'percent'</default>
       <summary>What the panel button shows</summary>
       <description>Either the tightest limit's percentage, the window's cost, or the icon alone.</description>
+    </key>
+    <key name="panel-limit-source" enum="org.gnome.shell.extensions.ai-usage-monitor.panel-limit-source">
+      <default>'both'</default>
+      <summary>Which providers' limits the panel shows</summary>
+      <description>Show Claude, Codex, or both when the panel mode is Limit percentage.</description>
     </key>
   </schema>
 </schemalist>

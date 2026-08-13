@@ -1,4 +1,4 @@
-import type { Limit, Provider, Snapshot, WindowDays } from './types.js'
+import type { Limit, PanelLimitSource, Provider, Snapshot, WindowDays } from './types.js'
 
 export const isWindowDays = (value: number): value is WindowDays =>
   value === 1 || value === 7 || value === 30
@@ -12,6 +12,21 @@ export const tightestLimit = (snapshot: Snapshot): { provider: Provider; limit: 
     }
   }
   return best
+}
+
+/** The one limit per selected provider that fits in the panel. */
+export const panelLimits = (
+  snapshot: Snapshot,
+  source: PanelLimitSource,
+): { provider: Provider; limit: Limit }[] => {
+  const providers = source === 'both' ? snapshot.providers : snapshot.providers.filter(({ id }) => id === source)
+  return providers.flatMap((provider) => {
+    const limit = provider.limits.reduce<Limit | null>(
+      (best, current) => best === null || current.percent > best.percent ? current : best,
+      null,
+    )
+    return limit === null ? [] : [{ provider, limit }]
+  })
 }
 
 export const totalUsd = (snapshot: Snapshot): number =>

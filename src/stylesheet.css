@@ -3,6 +3,10 @@
   margin-left: 5px;
   font-feature-settings: "tnum";
 }
+/* Wider than the icon-to-percentage gap, so each icon reads as belonging to the number after it. */
+.aiu-provider-icon {
+  margin-left: 9px;
+}
 .aiu-panel-warning {
   color: #f5c211;
 }
@@ -18,10 +22,10 @@
   font-weight: bold;
 }
 .aiu-section-trailing {
-  opacity: 0.7;
+  opacity: 0.88;
 }
 .aiu-dim {
-  opacity: 0.65;
+  opacity: 0.82;
 }
 
 .aiu-kv-key {
@@ -60,7 +64,7 @@
 
 .aiu-note-label {
   font-size: 0.9em;
-  opacity: 0.65;
+  opacity: 0.82;
   max-width: 320px;
 }
 

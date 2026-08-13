@@ -27,6 +27,18 @@ export default class AiUsageMonitorPreferences extends ExtensionPreferences {
     })
     panel.add(panelMode)
 
+    const sources = ['both', 'claude', 'codex']
+    const panelSource = new Adw.ComboRow({
+      title: 'Limit percentage shows',
+      subtitle: 'Choose Claude, Codex, or both in the panel',
+      model: Gtk.StringList.new(['Both', 'Claude', 'Codex']),
+    })
+    panelSource.selected = Math.max(0, sources.indexOf(settings.get_string('panel-limit-source')))
+    panelSource.connect('notify::selected', () => {
+      settings.set_string('panel-limit-source', sources[panelSource.selected] ?? 'both')
+    })
+    panel.add(panelSource)
+
     const data = new Adw.PreferencesGroup({
       title: 'Collection',
       description:

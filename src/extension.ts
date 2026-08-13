@@ -4,7 +4,7 @@ import type Gio from 'gi://Gio'
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js'
 
 import { isWindowDays } from './lib/snapshot.js'
-import type { WindowDays } from './lib/types.js'
+import type { PanelLimitSource, WindowDays } from './lib/types.js'
 import { CollectorRunner, loadCachedSnapshot, saveCachedSnapshot } from './runner.js'
 import { addToPanel, createIndicator, type UsageIndicatorInstance } from './ui/indicator.js'
 
@@ -29,7 +29,7 @@ export default class AiUsageMonitorExtension extends Extension {
       onOpenPreferences: () => this.openPreferences(),
     })
     this.indicator = indicator
-    indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'))
+    indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'), this.panelLimitSource())
 
     const cached = loadCachedSnapshot()
     if (cached !== null) indicator.setSnapshot(cached)
@@ -37,11 +37,14 @@ export default class AiUsageMonitorExtension extends Extension {
     addToPanel(indicator, this.uuid)
 
     settings.connect('changed::window-days', () => {
-      indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'))
+      indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'), this.panelLimitSource())
       this.refresh(true)
     })
     settings.connect('changed::panel-mode', () => {
-      indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'))
+      indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'), this.panelLimitSource())
+    })
+    settings.connect('changed::panel-limit-source', () => {
+      indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'), this.panelLimitSource())
     })
     settings.connect('changed::refresh-interval', () => this.restartTimer())
 
@@ -64,6 +67,11 @@ export default class AiUsageMonitorExtension extends Extension {
   private windowDays(): WindowDays {
     const raw = this.settings?.get_int('window-days') ?? 7
     return isWindowDays(raw) ? raw : 7
+  }
+
+  private panelLimitSource(): PanelLimitSource {
+    const source = this.settings?.get_string('panel-limit-source')
+    return source === 'claude' || source === 'codex' || source === 'both' ? source : 'both'
   }
 
   private restartTimer(): void {

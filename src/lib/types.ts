@@ -1,5 +1,7 @@
 export type ProviderId = 'claude' | 'codex'
 
+export type PanelLimitSource = ProviderId | 'both'
+
 export type WindowDays = 1 | 7 | 30
 
 /** A rolling usage limit as the provider reports it — percent consumed plus when it clears. */
