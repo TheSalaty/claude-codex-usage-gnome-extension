@@ -1,4 +1,4 @@
-UUID    := claudex-usage@thesalaty.github.io
+UUID    := tripmeter@thesalaty.github.io
 BUILD   := build/src
 TARGET  := $(HOME)/.local/share/gnome-shell/extensions/$(UUID)
 

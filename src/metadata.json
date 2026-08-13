@@ -1,10 +1,10 @@
 {
-  "uuid": "claudex-usage@thesalaty.github.io",
-  "name": "Claudex Usage",
+  "uuid": "tripmeter@thesalaty.github.io",
+  "name": "Tripmeter",
   "description": "Claude Code and Codex limits in the top panel, plus where the spend went: what the same traffic would have cost at API rates, broken down per model, per skill, per subagent and per MCP tool. Reads the session files already on your machine — no helper CLI, no API key, nothing leaves the machine. Detects which of the two CLIs is installed and works with either one alone.",
   "shell-version": ["49", "50"],
-  "settings-schema": "org.gnome.shell.extensions.claudex-usage",
-  "gettext-domain": "claudex-usage",
-  "url": "https://github.com/TheSalaty/claudex-usage",
+  "settings-schema": "org.gnome.shell.extensions.tripmeter",
+  "gettext-domain": "tripmeter",
+  "url": "https://github.com/TheSalaty/tripmeter",
   "version-name": "1.0.0"
 }

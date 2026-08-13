@@ -3,28 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Claudex Usage — Claude Code &amp; Codex usage and cost in the GNOME panel</title>
+<title>Tripmeter — Claude Code &amp; Codex usage and cost in the GNOME panel</title>
 <meta name="description" content="A GNOME Shell extension showing your Claude Code and OpenAI Codex usage limits, when they reset, and what the same traffic would have cost at API rates — per model, per skill, per subagent and per MCP tool.">
-<link rel="canonical" href="https://thesalaty.github.io/claudex-usage/">
+<link rel="canonical" href="https://thesalaty.github.io/tripmeter/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Claudex Usage — Claude Code &amp; Codex usage and cost in the GNOME panel">
+<meta property="og:title" content="Tripmeter — Claude Code &amp; Codex usage and cost in the GNOME panel">
 <meta property="og:description" content="GNOME Shell extension for Claude Code and OpenAI Codex: usage limits, resets, and what the traffic would have cost at API rates.">
-<meta property="og:image" content="https://thesalaty.github.io/claudex-usage/menu.png">
-<meta property="og:url" content="https://thesalaty.github.io/claudex-usage/">
+<meta property="og:image" content="https://thesalaty.github.io/tripmeter/menu.png">
+<meta property="og:url" content="https://thesalaty.github.io/tripmeter/">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Claudex Usage",
-  "alternateName": "Claude & Codex Usage for GNOME",
+  "name": "Tripmeter",
+  "alternateName": "Claude Code and Codex usage monitor for GNOME Shell",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Linux, GNOME Shell 49-50",
   "description": "A GNOME Shell extension showing Claude Code and OpenAI Codex usage limits, when they reset, and what the same traffic would have cost at API rates, broken down per model, per skill, per subagent and per MCP tool.",
   "softwareVersion": "1.0.0",
-  "url": "https://thesalaty.github.io/claudex-usage/",
-  "downloadUrl": "https://github.com/TheSalaty/claudex-usage/releases/latest",
-  "codeRepository": "https://github.com/TheSalaty/claudex-usage",
+  "url": "https://thesalaty.github.io/tripmeter/",
+  "downloadUrl": "https://github.com/TheSalaty/tripmeter/releases/latest",
+  "codeRepository": "https://github.com/TheSalaty/tripmeter",
   "license": "https://opensource.org/licenses/MIT",
   "author": { "@type": "Person", "name": "TheSalaty" },
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
@@ -51,7 +51,11 @@
     color: var(--fg);
     font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Cantarell, sans-serif;
   }
-  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 .25rem; letter-spacing: -.02em; }
+  /* Enough air that the dim subtitle below does not read as the lede's first line. */
+  h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 1.5rem; letter-spacing: -.02em; }
+  /* The brand says nothing on its own, so the descriptor rides along in the h1 rather than
+     sitting in a tag Google weighs less. */
+  h1 .sub { display: block; margin-top: .2rem; font-size: 1.05rem; font-weight: 400; color: var(--dim); letter-spacing: 0; }
   h2 { font-size: 1.15rem; margin: 2.75rem 0 .75rem; letter-spacing: -.01em; }
   .lede { color: var(--dim); font-size: 1.05rem; margin: 0 0 2rem; }
   a { color: var(--accent); }
@@ -79,7 +83,7 @@
 </head>
 <body>
 
-<h1>Claudex Usage</h1>
+<h1>Tripmeter <span class="sub">Claude Code &amp; Codex usage limits and API-rate cost in the GNOME panel</span></h1>
 <p class="lede">A GNOME Shell extension for <strong>Claude Code</strong> and <strong>OpenAI Codex</strong>
 that answers both questions from the top panel: how much of your limits is left, and
 <strong>where the spend actually went</strong> — what the same traffic would have cost at API rates,
@@ -92,7 +96,7 @@ broken down per model, per skill, per subagent and per MCP tool.</p>
 already on your machine; nothing is sent anywhere. Tested on GNOME 49 and 50, Wayland and X11,
 Arch/Manjaro, Fedora and Ubuntu.</p>
 
-<p><img src="menu.png" alt="The Claudex Usage menu showing Claude Code and Codex limits, resets and cost at API rates" width="420"></p>
+<p><img src="menu.png" alt="The Tripmeter menu showing Claude Code and Codex limits, resets and cost at API rates" width="420"></p>
 
 <h2>What it shows</h2>
 <ul>
@@ -111,10 +115,10 @@ Arch/Manjaro, Fedora and Ubuntu.</p>
 
 <h2>Install</h2>
 <p>Needs GNOME Shell 49 or 50. Download the zip from the
-<a href="https://github.com/TheSalaty/claudex-usage/releases/latest">latest release</a>, then:</p>
-<pre><code>gnome-extensions install --force claudex-usage@thesalaty.github.io.shell-extension.zip</code></pre>
+<a href="https://github.com/TheSalaty/tripmeter/releases/latest">latest release</a>, then:</p>
+<pre><code>gnome-extensions install --force tripmeter@thesalaty.github.io.shell-extension.zip</code></pre>
 <p>Log out and back in — Wayland cannot reload the shell in place — and enable it:</p>
-<pre><code>gnome-extensions enable claudex-usage@thesalaty.github.io</code></pre>
+<pre><code>gnome-extensions enable tripmeter@thesalaty.github.io</code></pre>
 
 <h2>Compared with the other usage extensions</h2>
 <p class="note">There are a dozen of these now, so here is an honest table. Feature sets are from
@@ -127,7 +131,7 @@ issue.</p>
     <tr><th></th><th>Claude</th><th>Codex</th><th>Limits</th><th>Cost at API rates</th><th>Per model / skill</th><th>GNOME</th></tr>
   </thead>
   <tbody>
-    <tr><td><strong>Claudex Usage</strong></td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>49–50</td></tr>
+    <tr><td><strong>Tripmeter</strong></td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>49–50</td></tr>
     <tr><td><a href="https://github.com/AltairInglorious/brainusage">Brain Usage</a></td><td>yes</td><td>yes</td><td>yes</td><td>—</td><td>—</td><td>45–49</td></tr>
     <tr><td><a href="https://github.com/wilfison/ai-usagebar">AI Usage Bar</a></td><td>yes</td><td>yes</td><td>yes</td><td>—</td><td>—</td><td>50</td></tr>
     <tr><td><a href="https://github.com/IanBraga96/gnome-claude-codex-usage">Claude + Codex Usage</a></td><td>yes</td><td>yes</td><td>yes</td><td>—</td><td>—</td><td>48–50</td></tr>
@@ -149,7 +153,7 @@ MCP tools. No helper CLI, no daemon — it reads the session files directly.</p>
 
 <footer>
 Source, settings and the pricing overrides:
-<a href="https://github.com/TheSalaty/claudex-usage">github.com/TheSalaty/claudex-usage</a>. MIT licensed.
+<a href="https://github.com/TheSalaty/tripmeter">github.com/TheSalaty/tripmeter</a>. MIT licensed.
 <br>
 An independent project, not affiliated with or endorsed by Anthropic or OpenAI. Claude and Claude
 Code are trademarks of Anthropic; Codex is a trademark of OpenAI. Other projects are named to
