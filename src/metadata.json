@@ -5,6 +5,6 @@
   "shell-version": ["49", "50"],
   "settings-schema": "org.gnome.shell.extensions.claudex-usage",
   "gettext-domain": "claudex-usage",
-  "url": "https://github.com/TheSalaty/claude-codex-usage-gnome-extension",
+  "url": "https://github.com/TheSalaty/claudex-usage",
   "version-name": "1.0.0"
 }

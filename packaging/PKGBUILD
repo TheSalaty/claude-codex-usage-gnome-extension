@@ -5,14 +5,14 @@ pkgver=1.0.0
 pkgrel=1
 pkgdesc="GNOME Shell extension showing Claude Code and OpenAI Codex usage limits, resets and API-equivalent cost in the top panel"
 arch=('any')
-url="https://github.com/TheSalaty/claude-codex-usage-gnome-extension"
+url="https://github.com/TheSalaty/claudex-usage"
 license=('MIT')
 depends=('gnome-shell')
 makedepends=('npm' 'glib2-devel')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
 sha256sums=('SKIP')
 
-_srcdir="claude-codex-usage-gnome-extension-$pkgver"
+_srcdir="claudex-usage-$pkgver"
 
 prepare() {
   cd "$_srcdir"

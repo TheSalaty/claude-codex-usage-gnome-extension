@@ -30,7 +30,7 @@ Tested on GNOME 49 and 50, Wayland and X11, Arch/Manjaro, Fedora and Ubuntu.
 ## Install
 
 Needs GNOME Shell 49 or 50. Grab the zip from the
-[latest release](https://github.com/TheSalaty/claude-codex-usage-gnome-extension/releases/latest):
+[latest release](https://github.com/TheSalaty/claudex-usage/releases/latest):
 
 ```sh
 gnome-extensions install --force claudex-usage@thesalaty.github.io.shell-extension.zip
@@ -39,8 +39,8 @@ gnome-extensions install --force claudex-usage@thesalaty.github.io.shell-extensi
 Or from source, which needs Node 20+:
 
 ```sh
-git clone https://github.com/TheSalaty/claude-codex-usage-gnome-extension.git
-cd claude-codex-usage-gnome-extension
+git clone https://github.com/TheSalaty/claudex-usage.git
+cd claudex-usage
 npm install
 make install
 ```
