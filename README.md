@@ -25,7 +25,15 @@ Tested on GNOME 49 and 50, Wayland and X11, Arch/Manjaro, Fedora and Ubuntu.
 
 ## Install
 
-Needs GNOME Shell 49 or 50 and Node 20+ to build.
+Needs GNOME Shell 49 or 50. Grab the zip from the
+[latest release](https://github.com/TheSalaty/claude-codex-usage-gnome-extension/releases/latest) —
+no build toolchain:
+
+```sh
+gnome-extensions install --force ai-usage-monitor@thesalaty.github.io.shell-extension.zip
+```
+
+Or from source, which needs Node 20+:
 
 ```sh
 git clone https://github.com/TheSalaty/claude-codex-usage-gnome-extension.git
