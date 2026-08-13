@@ -1,0 +1,93 @@
+/* Panel button */
+.aiu-panel-label {
+  margin-left: 5px;
+  font-feature-settings: "tnum";
+}
+.aiu-panel-warning {
+  color: #f5c211;
+}
+.aiu-panel-critical {
+  color: #e01b24;
+}
+
+/* Menu rows. Widths follow the shell's own popup metrics so the menu keeps its shape. */
+.aiu-section-header {
+  padding-top: 10px;
+}
+.aiu-section-title {
+  font-weight: bold;
+}
+.aiu-section-trailing {
+  opacity: 0.7;
+}
+.aiu-dim {
+  opacity: 0.65;
+}
+
+.aiu-kv-key {
+  min-width: 170px;
+}
+.aiu-kv-value {
+  font-feature-settings: "tnum";
+}
+
+.aiu-limit-box {
+  spacing: 3px;
+  min-width: 300px;
+}
+.aiu-limit-percent {
+  font-feature-settings: "tnum";
+}
+.aiu-limit-reset {
+  font-size: 0.9em;
+}
+
+.aiu-bar {
+  -barlevel-height: 4px;
+  -barlevel-background-color: rgba(255, 255, 255, 0.15);
+  -barlevel-active-background-color: #3584e4;
+  -barlevel-border-color: transparent;
+  -barlevel-active-border-color: transparent;
+  -barlevel-overdrive-color: transparent;
+  -barlevel-overdrive-separator-width: 0px;
+}
+.aiu-bar-warning {
+  -barlevel-active-background-color: #f5c211;
+}
+.aiu-bar-critical {
+  -barlevel-active-background-color: #e01b24;
+}
+
+.aiu-note-label {
+  font-size: 0.9em;
+  opacity: 0.65;
+  max-width: 320px;
+}
+
+/* Window switcher */
+.aiu-choice-box {
+  spacing: 4px;
+}
+.aiu-choice {
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-align: center;
+}
+.aiu-choice:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.aiu-choice-active {
+  background-color: rgba(255, 255, 255, 0.15);
+  font-weight: bold;
+}
+
+.aiu-footer {
+  padding-top: 8px;
+}
+.aiu-icon-button {
+  padding: 4px;
+  border-radius: 6px;
+}
+.aiu-icon-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

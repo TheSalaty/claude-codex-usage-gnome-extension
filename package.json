@@ -1,0 +1,22 @@
+{
+  "name": "ai-usage-monitor",
+  "version": "1.0.0",
+  "description": "GNOME Shell extension showing Claude Code and Codex usage limits, resets and API-equivalent cost",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch",
+    "test": "npm run build && node --test build/tests/",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "install-extension": "make install",
+    "pack": "make pack"
+  },
+  "devDependencies": {
+    "@girs/gnome-shell": "^50.0.4",
+    "@girs/soup-3.0": "^4.1.0",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.0.0"
+  }
+}

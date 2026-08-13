@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "rootDir": ".",
+    "outDir": "build",
+    "types": ["node"]
+  },
+  "//": "src/lib holds the pure aggregation logic and imports no GI module, so it type-checks and runs under plain node for the test suite.",
+  "include": ["tests/**/*.ts", "src/lib/**/*.ts"]
+}

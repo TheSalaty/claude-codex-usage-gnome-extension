@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "rootDir": ".",
+    "outDir": "build",
+    "types": [
+      "@girs/gjs",
+      "@girs/gjs/ambient",
+      "@girs/gjs/dom",
+      "@girs/gnome-shell/ambient",
+      "@girs/gnome-shell/extensions/global",
+      "@girs/soup-3.0/ambient"
+    ]
+  },
+  "include": ["src/**/*.ts"]
+}
