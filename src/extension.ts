@@ -15,6 +15,7 @@ export default class AiUsageMonitorExtension extends Extension {
   private indicator: UsageIndicatorInstance | null = null
   private runner: CollectorRunner | null = null
   private settings: Gio.Settings | null = null
+  private settingsHandlers: number[] = []
   private timerId = 0
   private lastRunMs = 0
 
@@ -36,17 +37,18 @@ export default class AiUsageMonitorExtension extends Extension {
 
     addToPanel(indicator, this.uuid)
 
-    settings.connect('changed::window-days', () => {
+    const apply = (): void =>
       indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'), this.panelLimitSource())
-      this.refresh(true)
-    })
-    settings.connect('changed::panel-mode', () => {
-      indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'), this.panelLimitSource())
-    })
-    settings.connect('changed::panel-limit-source', () => {
-      indicator.setSettings(this.windowDays(), settings.get_string('panel-mode'), this.panelLimitSource())
-    })
-    settings.connect('changed::refresh-interval', () => this.restartTimer())
+
+    this.settingsHandlers = [
+      settings.connect('changed::window-days', () => {
+        apply()
+        this.refresh(true)
+      }),
+      settings.connect('changed::panel-mode', apply),
+      settings.connect('changed::panel-limit-source', apply),
+      settings.connect('changed::refresh-interval', () => this.restartTimer()),
+    ]
 
     this.restartTimer()
     this.refresh(true)
@@ -57,6 +59,8 @@ export default class AiUsageMonitorExtension extends Extension {
       GLib.source_remove(this.timerId)
       this.timerId = 0
     }
+    for (const handler of this.settingsHandlers) this.settings?.disconnect(handler)
+    this.settingsHandlers = []
     this.runner?.cancel()
     this.runner = null
     this.indicator?.destroy()
