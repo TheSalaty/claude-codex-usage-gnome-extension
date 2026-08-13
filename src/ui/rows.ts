@@ -9,15 +9,19 @@ import { formatPercent, formatUntil } from '../lib/format.js'
 import { severityFor } from '../lib/snapshot.js'
 import type { Attribution, Limit } from '../lib/types.js'
 
-/** A non-interactive menu row. Limits and figures are readouts, not commands. */
-const staticItem = (styleClass: string): PopupMenu.PopupBaseMenuItem => {
-  const item = new PopupMenu.PopupBaseMenuItem({
+/**
+ * A non-interactive menu row. Limits and figures are readouts, not commands.
+ *
+ * The shell greys out every row it considers insensitive, which is unreadable for rows that are
+ * content rather than disabled commands — `aiu-row` is what the stylesheet hangs the full-contrast
+ * text colour on.
+ */
+export const staticItem = (styleClass: string): PopupMenu.PopupBaseMenuItem =>
+  new PopupMenu.PopupBaseMenuItem({
     reactive: false,
     can_focus: false,
-    style_class: `popup-menu-item ${styleClass}`,
+    style_class: `popup-menu-item aiu-row ${styleClass}`,
   })
-  return item
-}
 
 export const sectionHeader = (title: string, trailing: string | null): PopupMenu.PopupBaseMenuItem => {
   const item = staticItem('aiu-section-header')

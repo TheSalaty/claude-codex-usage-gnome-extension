@@ -1,0 +1,4 @@
+/* Appended to stylesheet.css to build stylesheet-light.css — see colors-dark.css. */
+.aiu-row:insensitive {
+  color: #222226 !important;
+}

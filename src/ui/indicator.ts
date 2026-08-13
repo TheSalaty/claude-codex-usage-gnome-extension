@@ -24,7 +24,15 @@ import {
   type Snapshot,
   type WindowDays,
 } from '../lib/types.js'
-import { attributionRows, choiceRow, keyValue, limitRow, note, sectionHeader } from './rows.js'
+import {
+  attributionRows,
+  choiceRow,
+  keyValue,
+  limitRow,
+  note,
+  sectionHeader,
+  staticItem,
+} from './rows.js'
 
 const WINDOW_CHOICES: readonly { value: WindowDays; label: string }[] = [
   { value: 1, label: '24 h' },
@@ -246,11 +254,7 @@ export const UsageIndicator = GObject.registerClass(
     }
 
     private footer(snapshot: Snapshot | null, nowMs: number): PopupMenu.PopupBaseMenuItem {
-      const item = new PopupMenu.PopupBaseMenuItem({
-        reactive: false,
-        can_focus: false,
-        style_class: 'popup-menu-item aiu-footer',
-      })
+      const item = staticItem('aiu-footer')
       const ago = snapshot === null ? null : formatAgo(snapshot.generatedAt, nowMs)
       item.add_child(
         new St.Label({

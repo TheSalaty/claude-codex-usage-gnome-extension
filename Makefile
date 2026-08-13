@@ -14,8 +14,12 @@ schemas: build
 	cp src/schemas/*.gschema.xml $(BUILD)/schemas/
 	glib-compile-schemas $(BUILD)/schemas
 
+# The shell loads exactly one of stylesheet-{dark,light}.css, so each has to be whole: the shared
+# rules plus that theme's colours.
 assets: build
-	cp src/metadata.json src/stylesheet.css $(BUILD)/
+	cp src/metadata.json $(BUILD)/
+	cat src/stylesheet.css src/colors-dark.css > $(BUILD)/stylesheet-dark.css
+	cat src/stylesheet.css src/colors-light.css > $(BUILD)/stylesheet-light.css
 	cp -r src/icons $(BUILD)/
 
 install: schemas assets

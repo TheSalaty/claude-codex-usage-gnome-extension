@@ -1,0 +1,9 @@
+/*
+ * Appended to stylesheet.css to build stylesheet-dark.css. The shell paints insensitive rows at
+ * half opacity, which is right for disabled commands and far too dim for readouts, so the readout
+ * rows take the menu's own foreground colour instead. `!important` beats the theme's own
+ * `.popup-sub-menu .popup-menu-item:insensitive`, which is more specific than anything we can say.
+ */
+.aiu-row:insensitive {
+  color: #ffffff !important;
+}
