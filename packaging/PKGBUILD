@@ -10,7 +10,7 @@ license=('MIT')
 depends=('gnome-shell')
 makedepends=('npm' 'glib2-devel')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
-sha256sums=('068877096882964420a1b0776640f9afdcdbb9e58cc28a4894db173f23e1353f')
+sha256sums=('2170708548661cdee78ff8c9737cdf17e7d2b53aa79ac02bbcdc53821bab046e')
 
 _srcdir="tripmeter-$pkgver"
 
