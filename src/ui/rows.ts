@@ -5,9 +5,9 @@ import St from 'gi://St'
 import * as BarLevel from 'resource:///org/gnome/shell/ui/barLevel.js'
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js'
 
-import { formatPercent, formatUntil } from '../lib/format.js'
+import { formatPercent, formatTime, formatUntil } from '../lib/format.js'
 import { severityFor } from '../lib/snapshot.js'
-import type { Attribution, Limit } from '../lib/types.js'
+import type { Attribution, Limit, ProviderId } from '../lib/types.js'
 
 export const staticItem = (styleClass: string): PopupMenu.PopupBaseMenuItem =>
   new PopupMenu.PopupBaseMenuItem({
@@ -52,7 +52,11 @@ export const note = (text: string): PopupMenu.PopupBaseMenuItem => {
   return item
 }
 
-export const limitRow = (limit: Limit, nowMs: number): PopupMenu.PopupBaseMenuItem => {
+export const limitRow = (
+  limit: Limit,
+  nowMs: number,
+  providerId: ProviderId,
+): PopupMenu.PopupBaseMenuItem => {
   const item = staticItem('aiu-limit')
   const column = new St.BoxLayout({ vertical: true, x_expand: true, style_class: 'aiu-limit-box' })
 
@@ -73,9 +77,14 @@ export const limitRow = (limit: Limit, nowMs: number): PopupMenu.PopupBaseMenuIt
 
   const until = formatUntil(limit.resetsAt, nowMs)
   if (until !== null) {
+    const resetTime =
+      providerId === 'claude' && limit.label === 'Session (5h)' ? formatTime(limit.resetsAt) : null
     column.add_child(
       new St.Label({
-        text: until === 'now' ? 'Resetting now' : `Resets in ${until}`,
+        text:
+          until === 'now'
+            ? 'Resetting now'
+            : `Resets in ${until}${resetTime === null ? '' : ` · ${resetTime} Uhr`}`,
         style_class: 'aiu-limit-reset aiu-dim',
       }),
     )

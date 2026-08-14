@@ -28,6 +28,15 @@ export const formatUntil = (isoTimestamp: string | null, nowMs: number): string 
   return `${Math.round(seconds / 86_400)}d`
 }
 
+export const formatTime = (isoTimestamp: string | null): string | null => {
+  if (isoTimestamp === null || !isFinite(Date.parse(isoTimestamp))) return null
+  return new Date(isoTimestamp).toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
+}
+
 export const formatAgo = (isoTimestamp: string | null, nowMs: number): string | null => {
   if (isoTimestamp === null) return null
   const then = Date.parse(isoTimestamp)

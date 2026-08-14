@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
 import { parseProfile, parseUsage } from '../src/lib/claude-usage.js'
-import { formatAgo, formatTokens, formatUntil, formatUsd } from '../src/lib/format.js'
+import { formatAgo, formatTime, formatTokens, formatUntil, formatUsd } from '../src/lib/format.js'
 
 test('the limits array is read with its scoped model name', () => {
   const limits = parseUsage({
@@ -59,6 +59,15 @@ test('reset times round to the unit the CLIs show', () => {
   assert.equal(formatUntil('2026-08-13T10:00:30Z', now), '1m')
   assert.equal(formatUntil('2026-08-13T09:00:00Z', now), 'now')
   assert.equal(formatUntil(null, now), null)
+  assert.equal(
+    formatTime('2026-08-13T10:00:00Z'),
+    new Date('2026-08-13T10:00:00Z').toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }),
+  )
+  assert.equal(formatTime(null), null)
   assert.equal(formatAgo('2026-08-13T09:58:00Z', now), '2m ago')
 })
 
