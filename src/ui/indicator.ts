@@ -375,5 +375,7 @@ export const createIndicator = (handlers: IndicatorHandlers): UsageIndicatorInst
 }
 
 export const addToPanel = (indicator: UsageIndicatorInstance, uuid: string): void => {
+  const existing = Main.panel.statusArea[uuid] as { destroy?: () => void } | undefined
+  existing?.destroy?.()
   Main.panel.addToStatusArea(uuid, indicator, 0, 'right')
 }
