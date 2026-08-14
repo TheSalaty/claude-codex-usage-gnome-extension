@@ -34,8 +34,8 @@ test('an account still on the older response shape keeps its two headline limits
   assert.deepEqual(
     limits.map((limit) => [limit.label, limit.percent, limit.resetsAt]),
     [
-      ['Weekly (7 day)', 80, null],
       ['Session (5h)', 30, '2026-08-13T11:00:00Z'],
+      ['Weekly (7 day)', 80, null],
     ],
   )
 })

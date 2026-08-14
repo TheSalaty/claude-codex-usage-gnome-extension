@@ -51,7 +51,7 @@ export const parseUsage = (payload: unknown): Limit[] => {
         resetsAt: limit.resets_at ?? null,
         isActive: limit.is_active === true,
       }))
-      .sort(byPercentDesc)
+      .sort(byClaudePriority)
   }
 
   const legacy: Limit[] = []
@@ -66,10 +66,13 @@ export const parseUsage = (payload: unknown): Limit[] => {
   }
   add('Session (5h)', response.five_hour)
   add('Weekly (7 day)', response.seven_day)
-  return legacy.sort(byPercentDesc)
+  return legacy.sort(byClaudePriority)
 }
 
 const byPercentDesc = (a: Limit, b: Limit): number => b.percent - a.percent
+
+const byClaudePriority = (a: Limit, b: Limit): number =>
+  Number(b.label === 'Session (5h)') - Number(a.label === 'Session (5h)') || byPercentDesc(a, b)
 
 type ProfileResponse = {
   account?: { email?: string | null } | null
