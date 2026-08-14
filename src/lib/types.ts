@@ -78,6 +78,8 @@ export type Provider = {
 
 export type Snapshot = {
   generatedAt: string
+  /** ISO 8601 start of the window every cost in this snapshot was measured over. */
+  since: string
   windowDays: WindowDays
   providers: Provider[]
   warnings: string[]

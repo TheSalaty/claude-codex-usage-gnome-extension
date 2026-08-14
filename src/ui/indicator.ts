@@ -12,6 +12,7 @@ import {
   formatAgo,
   formatDate,
   formatPercent,
+  formatRange,
   formatShare,
   formatTokens,
   formatUsd,
@@ -150,6 +151,8 @@ export const UsageIndicator = GObject.registerClass(
           this.handlers.onWindowChange(days),
         ),
       )
+      const range = snapshot === null ? null : formatRange(snapshot.since, nowMs)
+      if (range !== null) menu.addMenuItem(note(range))
       if (snapshot !== null && snapshot.providers.length > 0) {
         menu.addMenuItem(
           note(

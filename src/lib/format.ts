@@ -41,11 +41,23 @@ export const formatAgo = (isoTimestamp: string | null, nowMs: number): string | 
   return `${Math.round(seconds / 86_400)}d ago`
 }
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 export const formatDate = (isoDate: string): string => {
   const parts = isoDate.split('-')
   const month = Number(parts[1])
   const day = Number(parts[2])
   if (!isFinite(month) || !isFinite(day)) return isoDate
-  const names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-  return `${names[month - 1] ?? ''} ${day}`
+  return `${MONTHS[month - 1] ?? ''} ${day}`
+}
+
+/** "Jul 16 – Aug 14": the days a window covers, in local time. */
+export const formatRange = (sinceIso: string, untilMs: number): string | null => {
+  const since = Date.parse(sinceIso)
+  if (!isFinite(since)) return null
+  const monthDay = (ms: number): string => {
+    const date = new Date(ms)
+    return `${MONTHS[date.getMonth()] ?? ''} ${date.getDate()}`
+  }
+  return `${monthDay(since)} – ${monthDay(untilMs)}`
 }

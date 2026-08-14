@@ -65,7 +65,7 @@ Open with the gear in the menu, or `gnome-extensions prefs tripmeter@thesalaty.g
 |---|---|
 | **Panel button shows** | Limit %, cost, or icon only |
 | **Limit percentage shows** | Claude, Codex, or both |
-| **Cost window** | Past 24 hours, 7 days or 30 days |
+| **Cost window** | Past 24 hours, or the last 7 or 30 whole days (the menu names the range) |
 | **Refresh interval** | 60–3600 seconds between collections |
 
 Prices come from a built-in list ([`src/lib/pricing.ts`](src/lib/pricing.ts), USD per million
@@ -74,7 +74,7 @@ matching model-id prefix wins:
 
 ```json
 {
-  "gpt-5.6": { "input": 1.25, "output": 10 },
+  "gpt-5.6": { "input": 5, "output": 30 },
   "claude-opus": { "input": 5, "output": 25, "cacheReadFactor": 0.1 }
 }
 ```

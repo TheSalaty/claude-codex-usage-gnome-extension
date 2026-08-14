@@ -3,6 +3,17 @@ import type { Limit, PanelLimitSource, Provider, Snapshot, WindowDays } from './
 export const isWindowDays = (value: number): value is WindowDays =>
   value === 1 || value === 7 || value === 30
 
+/**
+ * Where a window begins. A multi-day window starts at local midnight so that "30 days" covers
+ * 30 whole days the menu can name, rather than 31 with the first one cut in half.
+ */
+export const windowStartMs = (windowDays: WindowDays, nowMs: number): number => {
+  if (windowDays === 1) return nowMs - 86_400_000
+  const start = new Date(nowMs)
+  start.setHours(0, 0, 0, 0)
+  return start.getTime() - (windowDays - 1) * 86_400_000
+}
+
 /** The limit the panel should shout about: whatever is closest to being hit. */
 export const tightestLimit = (snapshot: Snapshot): { provider: Provider; limit: Limit } | null => {
   let best: { provider: Provider; limit: Limit } | null = null
@@ -49,6 +60,7 @@ export const isSnapshot = (value: unknown): value is Snapshot => {
   const candidate = value as Partial<Snapshot>
   return (
     typeof candidate.generatedAt === 'string' &&
+    typeof candidate.since === 'string' &&
     typeof candidate.windowDays === 'number' &&
     Array.isArray(candidate.providers) &&
     Array.isArray(candidate.warnings)

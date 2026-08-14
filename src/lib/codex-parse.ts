@@ -23,6 +23,8 @@ type RolloutEvent = {
   payload?: {
     type?: string
     model?: string
+    /** Present on a fork's or subagent's own `session_meta`, naming the thread it branched from. */
+    forked_from_id?: string
     info?: {
       total_token_usage?: TokenUsage
       last_token_usage?: TokenUsage
@@ -45,6 +47,13 @@ export type CodexAggregate = {
 }
 
 const num = (value: unknown): number => (typeof value === 'number' && isFinite(value) ? value : 0)
+
+/**
+ * A fork or subagent opens its rollout with the parent's history copied in, every line
+ * re-stamped to the fork instant and written in one burst; the child's first real turn only
+ * lands seconds later, so a gap this size ends the copies.
+ */
+const FORK_COPY_MAX_GAP_MS = 1000
 
 const cumulative = (usage: TokenUsage | undefined) => ({
   input: num(usage?.input_tokens),
@@ -70,6 +79,8 @@ export const aggregateCodex = (
   for (const session of sessions) {
     let previous = cumulative(undefined)
     let model = 'unknown'
+    let sawSessionMeta = false
+    let forkCopyAnchorMs: number | null = null
 
     for (const line of session.lines) {
       if (line.length === 0) continue
@@ -81,6 +92,13 @@ export const aggregateCodex = (
         continue
       }
 
+      // Only the first meta describes this file's own session — a fork replays its ancestors'.
+      if (event.type === 'session_meta' && !sawSessionMeta) {
+        sawSessionMeta = true
+        const at = Date.parse(event.timestamp ?? '')
+        if (typeof event.payload?.forked_from_id === 'string' && isFinite(at)) forkCopyAnchorMs = at
+        continue
+      }
       if (event.type === 'turn_context' && typeof event.payload?.model === 'string') {
         model = event.payload.model
         continue
@@ -118,7 +136,18 @@ export const aggregateCodex = (
       if (delta.input + delta.output === 0) continue
 
       const epochMs = Date.parse(event.timestamp ?? '')
-      if (!isFinite(epochMs) || epochMs < options.sinceMs) continue
+      if (!isFinite(epochMs)) continue
+
+      // The copied history was already counted from the parent's own rollout.
+      if (forkCopyAnchorMs !== null) {
+        if (epochMs - forkCopyAnchorMs < FORK_COPY_MAX_GAP_MS) {
+          forkCopyAnchorMs = epochMs
+          continue
+        }
+        forkCopyAnchorMs = null
+      }
+
+      if (epochMs < options.sinceMs) continue
 
       builder.add({
         epochMs,

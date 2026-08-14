@@ -39,11 +39,16 @@ const sessionFiles = (sinceMs: number): string[] => {
 const readSession = (path: string): string[] => {
   const text = readTextFile(path)
   if (text === null) return []
-  // Only two event kinds carry the numbers; dropping the rest here keeps JSON.parse off the
-  // multi-megabyte reasoning and tool-output lines that make up most of a rollout.
+  // Only these event kinds carry the numbers or the fork marker; dropping the rest here keeps
+  // JSON.parse off the multi-megabyte reasoning and tool-output lines that fill a rollout.
   return text
     .split('\n')
-    .filter((line) => line.includes('"token_count"') || line.includes('"turn_context"'))
+    .filter(
+      (line) =>
+        line.includes('"token_count"') ||
+        line.includes('"turn_context"') ||
+        line.includes('"session_meta"'),
+    )
 }
 
 export const collectCodex = (options: { sinceMs: number; table: PriceTable }): Provider => {

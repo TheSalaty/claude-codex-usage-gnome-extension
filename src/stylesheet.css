@@ -1,20 +1,11 @@
-/* Panel button */
 .aiu-panel-label {
   margin-left: 5px;
   font-feature-settings: "tnum";
 }
-/* Wider than the icon-to-percentage gap, so each icon reads as belonging to the number after it. */
 .aiu-provider-icon {
   margin-left: 9px;
 }
-.aiu-panel-warning {
-  color: #f5c211;
-}
-.aiu-panel-critical {
-  color: #e01b24;
-}
 
-/* Menu rows. Widths follow the shell's own popup metrics so the menu keeps its shape. */
 .aiu-section-header {
   padding-top: 10px;
 }
@@ -48,18 +39,11 @@
 
 .aiu-bar {
   -barlevel-height: 4px;
-  -barlevel-background-color: rgba(255, 255, 255, 0.15);
-  -barlevel-active-background-color: #3584e4;
+  -barlevel-active-background-color: -st-accent-color;
   -barlevel-border-color: transparent;
   -barlevel-active-border-color: transparent;
   -barlevel-overdrive-color: transparent;
   -barlevel-overdrive-separator-width: 0px;
-}
-.aiu-bar-warning {
-  -barlevel-active-background-color: #f5c211;
-}
-.aiu-bar-critical {
-  -barlevel-active-background-color: #e01b24;
 }
 
 .aiu-note-label {
@@ -68,7 +52,6 @@
   max-width: 320px;
 }
 
-/* Window switcher */
 .aiu-choice-box {
   spacing: 4px;
 }
@@ -77,12 +60,13 @@
   border-radius: 6px;
   text-align: center;
 }
-.aiu-choice:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.aiu-choice-active {
-  background-color: rgba(255, 255, 255, 0.15);
+.aiu-choice.aiu-choice-active {
+  color: -st-accent-fg-color;
+  background-color: -st-accent-color;
   font-weight: bold;
+}
+.aiu-choice.aiu-choice-active:hover {
+  background-color: st-lighten(-st-accent-color, 5%);
 }
 
 .aiu-footer {
@@ -91,7 +75,4 @@
 .aiu-icon-button {
   padding: 4px;
   border-radius: 6px;
-}
-.aiu-icon-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
 }

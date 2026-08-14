@@ -2,6 +2,7 @@ import GLib from 'gi://GLib'
 import System from 'system'
 
 import { mergePrices } from '../lib/pricing.js'
+import { windowStartMs } from '../lib/snapshot.js'
 import type { Snapshot, WindowDays } from '../lib/types.js'
 import { claudeInstalled, collectClaude } from './claude.js'
 import { codexInstalled, collectCodex } from './codex.js'
@@ -21,11 +22,12 @@ const priceOverridesPath = (): string =>
 
 const main = (argv: string[]): number => {
   const windowDays = parseWindow(argv)
-  const sinceMs = Date.now() - windowDays * 86_400_000
+  const sinceMs = windowStartMs(windowDays, Date.now())
   const { table, warnings } = mergePrices(readJsonFile(priceOverridesPath()))
 
   const snapshot: Snapshot = {
     generatedAt: new Date().toISOString(),
+    since: new Date(sinceMs).toISOString(),
     windowDays,
     providers: [],
     warnings,

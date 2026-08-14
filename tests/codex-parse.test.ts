@@ -47,11 +47,40 @@ test('spend is the rise in the running total, not the repeated snapshot', () => 
     ],
     options,
   )
-  // Uncached input is 1M + 0M, cached 2M at 0.1x, output 100K at $10/M.
+  // Uncached input is 1M + 0M, cached 2M at 0.1x, output 100K at $12/M.
   assert.equal(cost.tokens.uncachedInput, 1_000_000)
   assert.equal(cost.tokens.cacheRead, 2_000_000)
   assert.equal(cost.tokens.output, 100_000)
-  assert.equal(Number(cost.usd.toFixed(4)), Number((1.25 * 1 + 1.25 * 0.2 + 10 * 0.1).toFixed(4)))
+  assert.equal(Number(cost.usd.toFixed(4)), Number((2 * 1 + 2 * 0.2 + 12 * 0.1).toFixed(4)))
+})
+
+test('a fork counts only its own turns, not the parent history copied in ahead of them', () => {
+  const meta = (at: string, forked: boolean): string =>
+    JSON.stringify({
+      timestamp: at,
+      type: 'session_meta',
+      payload: forked ? { id: 'child', forked_from_id: 'parent' } : { id: 'parent' },
+    })
+
+  const forkLines = [
+    meta('2026-08-12T10:00:00Z', true),
+    turnContext('gpt-5.6-terra'),
+    // The parent's history, re-stamped to the fork instant in one burst.
+    tokenCount('2026-08-12T10:00:00Z', { input: 400_000, cached: 0, output: 1000 }),
+    tokenCount('2026-08-12T10:00:00.030Z', { input: 900_000, cached: 0, output: 2000 }),
+    // The fork's own first turn, a real model call later.
+    tokenCount('2026-08-12T10:00:20Z', { input: 1_000_000, cached: 0, output: 2500 }),
+  ]
+
+  const forked = aggregateCodex([{ lines: forkLines }], options).cost
+  assert.equal(forked.tokens.uncachedInput, 100_000)
+  assert.equal(forked.tokens.output, 500)
+
+  const unforked = aggregateCodex(
+    [{ lines: [meta('2026-08-12T10:00:00Z', false), ...forkLines.slice(1)] }],
+    options,
+  ).cost
+  assert.equal(unforked.tokens.uncachedInput, 1_000_000)
 })
 
 test('a restarted counter is treated as fresh spend rather than a negative delta', () => {

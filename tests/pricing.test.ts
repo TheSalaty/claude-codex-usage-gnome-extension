@@ -5,11 +5,14 @@ import { mergePrices, priceFor, priceUsage } from '../src/lib/pricing.js'
 
 test('longest matching prefix wins so a dated snapshot keeps its family price', () => {
   assert.equal(priceFor('claude-opus-4-8')?.input, 5)
-  assert.equal(priceFor('claude-sonnet-5')?.input, 3)
+  assert.equal(priceFor('claude-sonnet-4-6')?.input, 3)
+  assert.equal(priceFor('claude-sonnet-5')?.input, 2)
   // 'claude-fable-5' must beat no shorter entry, but 'claude-mythos-5' matches 'claude-mythos'.
   assert.equal(priceFor('claude-fable-5')?.output, 50)
   assert.equal(priceFor('claude-mythos-5')?.output, 50)
-  assert.equal(priceFor('gpt-5.6-terra')?.input, 1.25)
+  assert.equal(priceFor('gpt-5.6-terra')?.input, 2)
+  assert.equal(priceFor('gpt-5.6-luna')?.output, 1.2)
+  assert.equal(priceFor('gpt-5.6')?.output, 30)
   assert.equal(priceFor('some-unknown-model'), null)
 })
 

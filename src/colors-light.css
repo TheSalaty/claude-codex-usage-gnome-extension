@@ -1,4 +1,24 @@
-/* Appended to stylesheet.css to build stylesheet-light.css — see colors-dark.css. */
 .aiu-row:insensitive {
   color: #222226 !important;
+}
+
+.aiu-panel-warning {
+  color: #905400;
+}
+.aiu-panel-critical {
+  color: #c30000;
+}
+.aiu-bar-warning {
+  -barlevel-active-background-color: #905400;
+}
+.aiu-bar-critical {
+  -barlevel-active-background-color: #c30000;
+}
+
+.aiu-bar {
+  -barlevel-background-color: rgba(34, 34, 38, 0.15);
+}
+.aiu-choice:hover,
+.aiu-icon-button:hover {
+  background-color: rgba(34, 34, 38, 0.08);
 }
