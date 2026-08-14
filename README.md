@@ -45,7 +45,8 @@ npm install
 make install
 ```
 
-Enable it, then log out and back in — Wayland cannot reload the shell in place:
+Log out and back in — Wayland cannot reload the shell in place, and until it has reloaded the
+shell does not know the extension exists — then enable it:
 
 ```sh
 gnome-extensions enable tripmeter@thesalaty.github.io
