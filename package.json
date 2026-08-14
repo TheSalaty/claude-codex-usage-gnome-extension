@@ -1,6 +1,6 @@
 {
   "name": "tripmeter",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "GNOME Shell extension showing Claude Code and Codex usage limits, resets and API-equivalent cost",
   "type": "module",
   "private": true,

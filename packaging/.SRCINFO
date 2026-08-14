@@ -1,6 +1,6 @@
 pkgbase = tripmeter
 	pkgdesc = Tripmeter Usage: AI usage tracker and Verbrauch monitor for Claude Code and OpenAI Codex — Claude/Codex usage and limits, token use, 5-hour/weekly quotas, resets and API cost
-	pkgver = 1.0.2
+	pkgver = 1.1.0
 	pkgrel = 1
 	url = https://github.com/TheSalaty/tripmeter
 	install = tripmeter.install
@@ -9,7 +9,7 @@ pkgbase = tripmeter
 	makedepends = npm
 	makedepends = glib2-devel
 	depends = gnome-shell>=1:49
-	source = tripmeter-1.0.2.tar.gz::https://github.com/TheSalaty/tripmeter/archive/v1.0.2.tar.gz
+	source = tripmeter-1.1.0.tar.gz::https://github.com/TheSalaty/tripmeter/archive/v1.1.0.tar.gz
 	source = tripmeter-remind-enable
 	source = tripmeter-remind-enable.desktop
 	sha256sums = cf40f4cc7773c8917ad6e884146172c162fb58f763144d95d62c7078d372fb05
