@@ -1,7 +1,7 @@
 # Maintainer: TheSalaty <j.ullrich@creedle.io>
 _uuid=tripmeter@thesalaty.github.io
 pkgname=tripmeter
-pkgver=1.1.0
+pkgver=1.2.0
 pkgrel=1
 pkgdesc="Tripmeter Usage: AI usage tracker and Verbrauch monitor for Claude Code and OpenAI Codex — Claude/Codex usage and limits, token use, 5-hour/weekly quotas, resets and API cost"
 arch=('any')
