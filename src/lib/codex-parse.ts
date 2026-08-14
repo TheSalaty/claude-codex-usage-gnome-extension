@@ -13,7 +13,6 @@ type TokenUsage = {
 type RateWindow = {
   used_percent?: number
   window_minutes?: number
-  /** Unix seconds. */
   resets_at?: number
 }
 
@@ -23,7 +22,6 @@ type RolloutEvent = {
   payload?: {
     type?: string
     model?: string
-    /** Present on a fork's or subagent's own `session_meta`, naming the thread it branched from. */
     forked_from_id?: string
     info?: {
       total_token_usage?: TokenUsage
@@ -39,7 +37,6 @@ type RolloutEvent = {
 
 export type CodexAggregate = {
   cost: Cost
-  /** Rate limits from the most recent snapshot Codex wrote, with the time it was written. */
   limits: Limit[]
   limitsAt: string | null
   planType: string | null
@@ -48,11 +45,6 @@ export type CodexAggregate = {
 
 const num = (value: unknown): number => (typeof value === 'number' && isFinite(value) ? value : 0)
 
-/**
- * A fork or subagent opens its rollout with the parent's history copied in, every line
- * re-stamped to the fork instant and written in one burst; the child's first real turn only
- * lands seconds later, so a gap this size ends the copies.
- */
 const FORK_COPY_MAX_GAP_MS = 1000
 
 const cumulative = (usage: TokenUsage | undefined) => ({
@@ -63,11 +55,6 @@ const cumulative = (usage: TokenUsage | undefined) => ({
   reasoning: num(usage?.reasoning_output_tokens),
 })
 
-/**
- * Aggregates Codex rollout sessions. Codex reports token usage as a running total per session
- * and repeats the same snapshot across events, so spend per request is the rise in that total —
- * summing the per-request field instead would double-count every repeated snapshot.
- */
 export const aggregateCodex = (
   sessions: Iterable<{ lines: Iterable<string> }>,
   options: { sinceMs: number; table: PriceTable },
@@ -92,7 +79,6 @@ export const aggregateCodex = (
         continue
       }
 
-      // Only the first meta describes this file's own session — a fork replays its ancestors'.
       if (event.type === 'session_meta' && !sawSessionMeta) {
         sawSessionMeta = true
         const at = Date.parse(event.timestamp ?? '')
@@ -119,8 +105,6 @@ export const aggregateCodex = (
       const totals = event.payload.info?.total_token_usage
       if (totals === undefined) continue
       const current = cumulative(totals)
-      // A total that went backwards means the session's counter restarted — a resumed or forked
-      // thread starts a fresh count — so the whole snapshot is new spend, not a negative delta.
       const base =
         current.input < previous.input || current.output < previous.output
           ? cumulative(undefined)
@@ -138,7 +122,6 @@ export const aggregateCodex = (
       const epochMs = Date.parse(event.timestamp ?? '')
       if (!isFinite(epochMs)) continue
 
-      // The copied history was already counted from the parent's own rollout.
       if (forkCopyAnchorMs !== null) {
         if (epochMs - forkCopyAnchorMs < FORK_COPY_MAX_GAP_MS) {
           forkCopyAnchorMs = epochMs
@@ -153,7 +136,6 @@ export const aggregateCodex = (
         epochMs,
         model,
         usage: {
-          // Codex counts cached and freshly written tokens inside `input_tokens`.
           uncachedInput: Math.max(0, delta.input - delta.cached - delta.write),
           cacheRead: delta.cached,
           cacheWrite: delta.write,

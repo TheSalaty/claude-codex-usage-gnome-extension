@@ -43,5 +43,4 @@ const main = (argv: string[]): number => {
   return 0
 }
 
-// Under `gjs -m` the legacy ARGV global is absent; the system module carries the arguments.
 main(System.programArgs)

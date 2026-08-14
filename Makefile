@@ -9,16 +9,12 @@ all: build
 build:
 	npx tsc -p tsconfig.json
 
-# Wiped rather than topped up: a renamed schema would otherwise leave its old file behind to be
-# compiled into the same gschemas.compiled and shipped.
 schemas: build
 	rm -rf $(BUILD)/schemas
 	mkdir -p $(BUILD)/schemas
 	cp src/schemas/*.gschema.xml $(BUILD)/schemas/
 	glib-compile-schemas $(BUILD)/schemas
 
-# The shell loads exactly one of stylesheet-{dark,light}.css, so each has to be whole: the shared
-# rules plus that theme's colours.
 assets: build
 	cp src/metadata.json $(BUILD)/
 	cat src/stylesheet.css src/colors-dark.css > $(BUILD)/stylesheet-dark.css

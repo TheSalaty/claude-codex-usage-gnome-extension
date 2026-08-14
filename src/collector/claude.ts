@@ -7,7 +7,6 @@ import { emptyCost, type Provider } from '../lib/types.js'
 import { exists, httpGet, isoSeconds, onPath, readJsonFile, runShell } from './io.js'
 
 const API = 'https://api.anthropic.com'
-// The same headers Claude Code sends; the OAuth endpoints reject a bare bearer token.
 const OAUTH_BETA = 'oauth-2025-04-20'
 
 const home = (): string => GLib.get_home_dir()
@@ -31,8 +30,9 @@ type Token = {
   expiresAtMs: number | null
 }
 
-const readToken = (): Token | null => {
-  const payload = readJsonFile(credentialsPath()) as Credentials | null
+const readCredentials = (): Credentials | null => readJsonFile(credentialsPath()) as Credentials | null
+
+const readToken = (payload: Credentials | null): Token | null => {
   const oauth = payload?.claudeAiOauth
   if (oauth === undefined || typeof oauth.accessToken !== 'string') return null
   return {
@@ -41,8 +41,7 @@ const readToken = (): Token | null => {
   }
 }
 
-const readSubscription = (): string | null => {
-  const payload = readJsonFile(credentialsPath()) as Credentials | null
+const readSubscription = (payload: Credentials | null): string | null => {
   const type = payload?.claudeAiOauth?.subscriptionType
   return typeof type === 'string' ? type : null
 }
@@ -61,11 +60,6 @@ const oauthGet = (path: string, token: string): unknown => {
   }
 }
 
-/**
- * Reads every assistant record written since `sinceMs`. Files untouched in the window cannot
- * hold records inside it — transcripts are append-only — so the mtime filter is exact, not a
- * heuristic, and it keeps a 24-hour view from re-reading years of history.
- */
 const transcriptLines = (sinceMs: number): string[] => {
   const root = projectsDir()
   if (!exists(root)) return []
@@ -90,7 +84,8 @@ export const collectClaude = (options: { sinceMs: number; table: PriceTable }): 
     warnings,
   }
 
-  const token = readToken()
+  const credentials = readCredentials()
+  const token = readToken(credentials)
   if (token === null) {
     warnings.push('Not signed in — no credentials in ~/.claude/.credentials.json')
   } else if (token.expiresAtMs !== null && token.expiresAtMs <= Date.now()) {
@@ -102,7 +97,7 @@ export const collectClaude = (options: { sinceMs: number; table: PriceTable }): 
     } else {
       provider.limits = parseUsage(usage)
     }
-    provider.account = parseProfile(oauthGet('/api/oauth/profile', token.value), readSubscription())
+    provider.account = parseProfile(oauthGet('/api/oauth/profile', token.value), readSubscription(credentials))
   }
 
   const aggregate = aggregateClaude(transcriptLines(options.sinceMs), options)

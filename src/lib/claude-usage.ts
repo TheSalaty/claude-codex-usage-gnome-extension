@@ -39,11 +39,6 @@ const kindLabel = (limit: ApiLimit): string => {
   return scoped === undefined || scoped === null ? capitalised : `${capitalised} ${scoped}`
 }
 
-/**
- * Reads `/api/oauth/usage`. The `limits` array is the current shape; the older `five_hour` /
- * `seven_day` pair is kept as a fallback so an account that still gets the old response — or a
- * response where `limits` is empty — still shows its two headline limits.
- */
 export const parseUsage = (payload: unknown): Limit[] => {
   if (payload === null || typeof payload !== 'object') return []
   const response = payload as UsageResponse
@@ -98,7 +93,6 @@ const planLabel = (organizationType: string | null | undefined, subscription: st
   return subscription.charAt(0).toUpperCase() + subscription.slice(1)
 }
 
-/** Reads `/api/oauth/profile`, falling back to what the credentials file already knows. */
 export const parseProfile = (payload: unknown, subscription: string | null): Account => {
   const response =
     payload !== null && typeof payload === 'object' ? (payload as ProfileResponse) : {}

@@ -3,10 +3,6 @@ import type { Limit, PanelLimitSource, Provider, Snapshot, WindowDays } from './
 export const isWindowDays = (value: number): value is WindowDays =>
   value === 1 || value === 7 || value === 30
 
-/**
- * Where a window begins. A multi-day window starts at local midnight so that "30 days" covers
- * 30 whole days the menu can name, rather than 31 with the first one cut in half.
- */
 export const windowStartMs = (windowDays: WindowDays, nowMs: number): number => {
   if (windowDays === 1) return nowMs - 86_400_000
   const start = new Date(nowMs)
@@ -14,7 +10,6 @@ export const windowStartMs = (windowDays: WindowDays, nowMs: number): number => 
   return start.getTime() - (windowDays - 1) * 86_400_000
 }
 
-/** The limit the panel should shout about: whatever is closest to being hit. */
 export const tightestLimit = (snapshot: Snapshot): { provider: Provider; limit: Limit } | null => {
   let best: { provider: Provider; limit: Limit } | null = null
   for (const provider of snapshot.providers) {
@@ -25,7 +20,6 @@ export const tightestLimit = (snapshot: Snapshot): { provider: Provider; limit: 
   return best
 }
 
-/** The one limit per selected provider that fits in the panel. */
 export const panelLimits = (
   snapshot: Snapshot,
   source: PanelLimitSource,
@@ -51,10 +45,6 @@ export const severityFor = (percent: number): Severity => {
   return 'normal'
 }
 
-/**
- * Validates a decoded snapshot. The collector is a separate process whose output can be
- * truncated by a kill or a full disk, so a half-written cache must not brick the panel.
- */
 export const isSnapshot = (value: unknown): value is Snapshot => {
   if (value === null || typeof value !== 'object') return false
   const candidate = value as Partial<Snapshot>

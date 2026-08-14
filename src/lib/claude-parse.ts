@@ -2,11 +2,6 @@ import { CostBuilder, type Sample } from './cost-builder.js'
 import type { PriceTable } from './pricing.js'
 import type { Cost } from './types.js'
 
-/**
- * Claude Code stamps each assistant record with the skill, subagent and MCP tool it ran
- * under, so the breakdown needs no turn reconstruction — it reads the attribution the
- * harness already recorded.
- */
 type AssistantRecord = {
   type?: string
   timestamp?: string
@@ -39,17 +34,10 @@ export type ClaudeAggregate = {
 
 const num = (value: unknown): number => (typeof value === 'number' && isFinite(value) ? value : 0)
 
-/**
- * Aggregates raw transcript lines. Lines that are not assistant records are skipped rather
- * than rejected: the caller pre-filters with grep, which also matches the marker string when
- * it appears inside an unrelated tool result.
- */
 export const aggregateClaude = (
   lines: Iterable<string>,
   options: { sinceMs: number; table: PriceTable },
 ): ClaudeAggregate => {
-  // A resumed or forked session re-logs earlier assistant messages verbatim, so the same
-  // message id can appear in several files; counting each id once is what keeps totals honest.
   const byMessageId = new Map<string, { sample: Sample; total: number }>()
   let malformed = 0
 
@@ -104,7 +92,6 @@ export const aggregateClaude = (
 
     const id = record.message?.id ?? `${record.requestId ?? ''}:${epochMs}`
     const previous = byMessageId.get(id)
-    // Streaming writes one record per content block; the last write carries the final usage.
     if (previous === undefined || total > previous.total) byMessageId.set(id, { sample, total })
   }
 

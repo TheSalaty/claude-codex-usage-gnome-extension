@@ -1,16 +1,8 @@
-/**
- * Local price list, in USD per million tokens. Nobody bills these numbers — subscription
- * traffic is flat-rate — so every figure the extension shows is "what the API would have
- * charged", the same convention as the raw-token-cost view in t3 code.
- */
 export type ModelPrice = {
   input: number
   output: number
-  /** Multiplier on `input` for tokens served from the prompt cache. */
   cacheReadFactor: number
-  /** Multiplier on `input` for tokens written to a 5-minute cache entry. */
   cacheWriteFactor: number
-  /** Multiplier on `input` for tokens written to a 1-hour cache entry. */
   cacheWrite1hFactor: number
 }
 
@@ -22,7 +14,6 @@ const anthropic = (input: number, output: number): ModelPrice => ({
   cacheWrite1hFactor: 2,
 })
 
-// OpenAI bills a cache write as ordinary input and has no long-TTL tier.
 const openai = (input: number, output: number): ModelPrice => ({
   input,
   output,
@@ -31,7 +22,6 @@ const openai = (input: number, output: number): ModelPrice => ({
   cacheWrite1hFactor: 1,
 })
 
-/** Longest matching prefix wins, so dated snapshots inherit their family's price. */
 export const DEFAULT_PRICES: Record<string, ModelPrice> = {
   'claude-fable-5': anthropic(10, 50),
   'claude-mythos': anthropic(10, 50),
@@ -71,7 +61,6 @@ export type Usage = {
 
 export type Priced = {
   usd: number
-  /** The same tokens billed as if none of them had hit the cache. */
   usdWithoutCache: number
 }
 
@@ -89,10 +78,6 @@ export const priceUsage = (usage: Usage, price: ModelPrice | null): Priced => {
   }
 }
 
-/**
- * Merges a user price list over the defaults. Entries are validated because the file is
- * hand-edited: a typo would otherwise silently price a whole model family at NaN.
- */
 export const mergePrices = (overrides: unknown): { table: PriceTable; warnings: string[] } => {
   const table: PriceTable = { ...DEFAULT_PRICES }
   const warnings: string[] = []

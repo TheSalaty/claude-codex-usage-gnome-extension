@@ -8,7 +8,6 @@ import type { PanelLimitSource, WindowDays } from './lib/types.js'
 import { CollectorRunner, loadCachedSnapshot, saveCachedSnapshot } from './runner.js'
 import { addToPanel, createIndicator, type UsageIndicatorInstance } from './ui/indicator.js'
 
-/** A menu that was just opened refreshes only if the data is older than this. */
 const STALE_AFTER_SECONDS = 45
 
 export default class TripmeterExtension extends Extension {

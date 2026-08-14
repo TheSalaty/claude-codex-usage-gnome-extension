@@ -10,10 +10,6 @@ export type RunResult =
   | { ok: true; snapshot: Snapshot }
   | { ok: false; error: string }
 
-/**
- * Runs the collector out of process. Aggregating transcripts means reading and parsing tens of
- * megabytes; doing that in the shell process would stall the compositor for as long as it takes.
- */
 export class CollectorRunner {
   private cancellable: Gio.Cancellable | null = null
 
@@ -77,7 +73,6 @@ const firstLine = (text: string | null): string | null => {
 const cachePath = (): string =>
   GLib.build_filenamev([GLib.get_user_cache_dir(), CACHE_DIR, 'snapshot.json'])
 
-/** Keeps the last snapshot across logins so the panel has something to show before the first run. */
 export const loadCachedSnapshot = (): Snapshot | null => {
   try {
     const [ok, contents] = GLib.file_get_contents(cachePath())
@@ -94,7 +89,5 @@ export const saveCachedSnapshot = (snapshot: Snapshot): void => {
     const path = cachePath()
     GLib.mkdir_with_parents(GLib.path_get_dirname(path), 0o755)
     GLib.file_set_contents(path, JSON.stringify(snapshot))
-  } catch {
-    // A missing cache only costs a stale-free first paint; never worth failing a refresh over.
-  }
+  } catch {}
 }

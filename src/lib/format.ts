@@ -17,7 +17,6 @@ export const formatPercent = (percent: number): string => `${Math.round(percent)
 export const formatShare = (part: number, whole: number): string =>
   whole <= 0 ? '0%' : `${Math.round((part / whole) * 100)}%`
 
-/** "Resets in 2h" granularity: whole days, then whole hours, then minutes. */
 export const formatUntil = (isoTimestamp: string | null, nowMs: number): string | null => {
   if (isoTimestamp === null) return null
   const target = Date.parse(isoTimestamp)
@@ -29,7 +28,6 @@ export const formatUntil = (isoTimestamp: string | null, nowMs: number): string 
   return `${Math.round(seconds / 86_400)}d`
 }
 
-/** "3m ago" for the age of a cached snapshot. */
 export const formatAgo = (isoTimestamp: string | null, nowMs: number): string | null => {
   if (isoTimestamp === null) return null
   const then = Date.parse(isoTimestamp)
@@ -51,7 +49,6 @@ export const formatDate = (isoDate: string): string => {
   return `${MONTHS[month - 1] ?? ''} ${day}`
 }
 
-/** "Jul 16 – Aug 14": the days a window covers, in local time. */
 export const formatRange = (sinceIso: string, untilMs: number): string | null => {
   const since = Date.parse(sinceIso)
   if (!isFinite(since)) return null

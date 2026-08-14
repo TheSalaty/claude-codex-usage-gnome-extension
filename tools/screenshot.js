@@ -1,16 +1,3 @@
-// Photographs the extension in an isolated headless GNOME Shell.
-//
-// GNOME 49+ refuses org.gnome.Shell.Screenshot for headless sessions and no longer exposes an
-// UnsafeMode property for Eval, so the only way to see the real widgets is to drive Mutter the
-// way gnome-remote-desktop does: a RemoteDesktop session for the pointer and a ScreenCast
-// PipeWire stream for the pixels. Both die with the D-Bus connection that created them, which is
-// why this is one long-lived process rather than a series of gdbus calls.
-//
-// Usage (from the repo root, after `make install`):
-//   dbus-run-session -- ./tools/shoot.sh
-//
-// Each --click argument is an "x,y[:name]" step: move there, click, wait, capture.
-
 import Gio from 'gi://Gio'
 import GLib from 'gi://GLib'
 import System from 'system'
@@ -102,8 +89,6 @@ const startSessions = () => {
     },
   )
 
-  // A screencast session linked to a remote-desktop session is started by the remote-desktop
-  // session; calling Start on it directly is rejected.
   call('org.gnome.Mutter.RemoteDesktop', remotePath, 'org.gnome.Mutter.RemoteDesktop.Session', 'Start', null)
 
   for (let attempt = 0; attempt < 40 && nodeId === 0; attempt += 1) sleep(0.25)
@@ -186,8 +171,6 @@ const main = (argv) => {
   }
 
   const session = startSessions()
-  // A first-login shell may put a modal welcome dialog over the panel; Escape clears whatever
-  // happens to be up before the pointer steps run.
   pressEscape(session)
   sleep(0.5)
   pressEscape(session)

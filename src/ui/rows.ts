@@ -9,13 +9,6 @@ import { formatPercent, formatUntil } from '../lib/format.js'
 import { severityFor } from '../lib/snapshot.js'
 import type { Attribution, Limit } from '../lib/types.js'
 
-/**
- * A non-interactive menu row. Limits and figures are readouts, not commands.
- *
- * The shell greys out every row it considers insensitive, which is unreadable for rows that are
- * content rather than disabled commands — `aiu-row` is what the stylesheet hangs the full-contrast
- * text colour on.
- */
 export const staticItem = (styleClass: string): PopupMenu.PopupBaseMenuItem =>
   new PopupMenu.PopupBaseMenuItem({
     reactive: false,
@@ -59,10 +52,6 @@ export const note = (text: string): PopupMenu.PopupBaseMenuItem => {
   return item
 }
 
-/**
- * A limit as Claude Code and Codex present it: name, percentage, a bar, and when it clears.
- * BarLevel is the shell's own meter widget, so it inherits theme colours and accessibility.
- */
 export const limitRow = (limit: Limit, nowMs: number): PopupMenu.PopupBaseMenuItem => {
   const item = staticItem('aiu-limit')
   const column = new St.BoxLayout({ vertical: true, x_expand: true, style_class: 'aiu-limit-box' })
@@ -79,9 +68,6 @@ export const limitRow = (limit: Limit, nowMs: number): PopupMenu.PopupBaseMenuIt
     style_class: `aiu-bar aiu-bar-${severityFor(limit.percent)}`,
     x_expand: true,
   })
-  // BarLevel's `value` and `maximum-value` are doubles capped at 2 by their ParamSpecs, so a
-  // percentage has to arrive as a fraction of the default maximum of 1 — passing 90 out of 100
-  // clamps both ends and draws a bar that no longer matches the number beside it.
   bar.value = Math.max(0, Math.min(1, limit.percent / 100))
   column.add_child(bar)
 
@@ -99,7 +85,6 @@ export const limitRow = (limit: Limit, nowMs: number): PopupMenu.PopupBaseMenuIt
   return item
 }
 
-/** Share-of-spend rows, e.g. skills or subagents. Shares overlap by design. */
 export const attributionRows = (
   title: string,
   entries: readonly Attribution[],
@@ -116,7 +101,6 @@ export const attributionRows = (
   return rows.length > 1 ? rows : []
 }
 
-/** A row of mutually exclusive choices, e.g. the 24h / 7 days / 30 days window. */
 export const choiceRow = <T extends string | number>(
   choices: readonly { value: T; label: string }[],
   selected: T,

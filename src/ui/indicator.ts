@@ -43,7 +43,6 @@ const WINDOW_CHOICES: readonly { value: WindowDays; label: string }[] = [
 
 const ICONS_URI = import.meta.url.replace('/ui/indicator.js', '/icons/')
 
-/** Matches the shell's own submenu expansion, so a resize and an expansion read as one motion. */
 const RESIZE_MS = 250
 
 export type IndicatorHandlers = {
@@ -135,10 +134,6 @@ export const UsageIndicator = GObject.registerClass(
       this.easeMenuFrom(width, height)
     }
 
-    /**
-     * A collection landing while the menu is open replaces every row, and the shell would apply
-     * the new size in one frame; easing out of the size the menu already had hides the jump.
-     */
     private easeMenuFrom(width: number, height: number): void {
       const menu = this.menu as PopupMenu.PopupMenu
       const box = menu.box
@@ -157,8 +152,6 @@ export const UsageIndicator = GObject.registerClass(
         height: naturalHeight,
         duration: RESIZE_MS,
         mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        // Only the newest resize may hand the box back its natural size — an older one being
-        // superseded also stops here, and would otherwise cancel the size the new one is easing to.
         onStopped: () => {
           if (serial === this.resizeSerial) box.set_size(-1, -1)
         },
@@ -363,10 +356,6 @@ export const UsageIndicator = GObject.registerClass(
       this.label.visible = false
     }
 
-    /**
-     * The `-symbolic.svg` suffix is what makes the shell recolour the icon to the current
-     * foreground colour, so it follows the panel text through light and dark themes.
-     */
     private providerIcon(provider: 'claude' | 'codex'): St.Icon {
       const icon = new St.Icon({
         gicon: new Gio.FileIcon({
@@ -405,10 +394,6 @@ export const UsageIndicator = GObject.registerClass(
 
 export type UsageIndicatorInstance = InstanceType<typeof UsageIndicator>
 
-/**
- * `GObject.registerClass` types the returned constructor from the base class, so the handler
- * argument has to be re-applied here rather than being visible on `new UsageIndicator`.
- */
 export const createIndicator = (handlers: IndicatorHandlers): UsageIndicatorInstance => {
   const Constructor = UsageIndicator as unknown as new (
     handlers: IndicatorHandlers,

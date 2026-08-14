@@ -1,7 +1,6 @@
 import { priceFor, priceUsage, type PriceTable, type Usage } from './pricing.js'
 import { emptyCost, type Attribution, type Cost, type DayCost, type ModelCost } from './types.js'
 
-/** `YYYY-MM-DD` in the machine's own timezone — the day boundary the user sees. */
 export const localDay = (epochMs: number): string => {
   const d = new Date(epochMs)
   const pad = (n: number): string => String(n).padStart(2, '0')
@@ -13,11 +12,6 @@ export type Sample = {
   model: string
   usage: Usage
   reasoning: number
-  /**
-   * Named dimensions this request belongs to, e.g. `{ skills: ['/ponytail'] }`. Dimensions are
-   * independent characteristics of the same spend, not a partition — a request can land in
-   * several, so their shares overlap and do not sum to the total.
-   */
   attributions: Readonly<Record<string, readonly string[]>>
 }
 
@@ -45,8 +39,6 @@ export class CostBuilder {
       sample.usage.cacheWrite +
       sample.usage.cacheWrite1h +
       sample.usage.output
-    // Claude Code logs `<synthetic>` placeholder messages that never reached the API; counting
-    // them would add a permanently unpriced model to the breakdown for zero tokens.
     if (tokens === 0) return
 
     const price = priceFor(sample.model, this.table)

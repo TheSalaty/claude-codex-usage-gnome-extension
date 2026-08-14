@@ -4,13 +4,10 @@ export type PanelLimitSource = ProviderId | 'both'
 
 export type WindowDays = 1 | 7 | 30
 
-/** A rolling usage limit as the provider reports it — percent consumed plus when it clears. */
 export type Limit = {
   label: string
   percent: number
-  /** ISO 8601, or `null` when the provider reports no reset time. */
   resetsAt: string | null
-  /** The limit the provider currently throttles on. */
   isActive: boolean
 }
 
@@ -29,13 +26,11 @@ export type ModelCost = {
 }
 
 export type DayCost = {
-  /** `YYYY-MM-DD` in local time. */
   date: string
   usd: number
   tokens: number
 }
 
-/** Share of window cost attributed to a named skill, subagent or slash command. */
 export type Attribution = {
   name: string
   usd: number
@@ -43,7 +38,6 @@ export type Attribution = {
 
 export type Cost = {
   usd: number
-  /** What the same traffic would have cost without prompt caching. */
   usdWithoutCache: number
   tokens: TokenTotals
   models: ModelCost[]
@@ -66,19 +60,13 @@ export type Provider = {
   name: string
   account: Account
   limits: Limit[]
-  /**
-   * When the limits were measured. `null` means they were read live — Codex has no usage
-   * endpoint, so its figures come from the snapshot its last session happened to record.
-   */
   limitsAt: string | null
   cost: Cost
-  /** Non-fatal problems worth surfacing — stale limits, expired token, unpriced models. */
   warnings: string[]
 }
 
 export type Snapshot = {
   generatedAt: string
-  /** ISO 8601 start of the window every cost in this snapshot was measured over. */
   since: string
   windowDays: WindowDays
   providers: Provider[]

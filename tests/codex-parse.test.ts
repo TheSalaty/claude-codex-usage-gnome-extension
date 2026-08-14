@@ -39,7 +39,6 @@ test('spend is the rise in the running total, not the repeated snapshot', () => 
         lines: [
           turnContext('gpt-5.6-terra'),
           tokenCount('2026-08-12T10:00:00Z', { input: 1_000_000, cached: 0, output: 0 }),
-          // Same snapshot re-emitted: contributes nothing.
           tokenCount('2026-08-12T10:00:01Z', { input: 1_000_000, cached: 0, output: 0 }),
           tokenCount('2026-08-12T10:05:00Z', { input: 3_000_000, cached: 2_000_000, output: 100_000 }),
         ],
@@ -47,7 +46,6 @@ test('spend is the rise in the running total, not the repeated snapshot', () => 
     ],
     options,
   )
-  // Uncached input is 1M + 0M, cached 2M at 0.1x, output 100K at $12/M.
   assert.equal(cost.tokens.uncachedInput, 1_000_000)
   assert.equal(cost.tokens.cacheRead, 2_000_000)
   assert.equal(cost.tokens.output, 100_000)
@@ -65,10 +63,8 @@ test('a fork counts only its own turns, not the parent history copied in ahead o
   const forkLines = [
     meta('2026-08-12T10:00:00Z', true),
     turnContext('gpt-5.6-terra'),
-    // The parent's history, re-stamped to the fork instant in one burst.
     tokenCount('2026-08-12T10:00:00Z', { input: 400_000, cached: 0, output: 1000 }),
     tokenCount('2026-08-12T10:00:00.030Z', { input: 900_000, cached: 0, output: 2000 }),
-    // The fork's own first turn, a real model call later.
     tokenCount('2026-08-12T10:00:20Z', { input: 1_000_000, cached: 0, output: 2500 }),
   ]
 

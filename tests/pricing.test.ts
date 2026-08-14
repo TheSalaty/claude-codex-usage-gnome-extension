@@ -7,7 +7,6 @@ test('longest matching prefix wins so a dated snapshot keeps its family price', 
   assert.equal(priceFor('claude-opus-4-8')?.input, 5)
   assert.equal(priceFor('claude-sonnet-4-6')?.input, 3)
   assert.equal(priceFor('claude-sonnet-5')?.input, 2)
-  // 'claude-fable-5' must beat no shorter entry, but 'claude-mythos-5' matches 'claude-mythos'.
   assert.equal(priceFor('claude-fable-5')?.output, 50)
   assert.equal(priceFor('claude-mythos-5')?.output, 50)
   assert.equal(priceFor('gpt-5.6-terra')?.input, 2)
@@ -23,7 +22,6 @@ test('cache reads and the two cache-write tiers are billed at their own multipli
     { uncachedInput: 1_000_000, cacheRead: 1_000_000, cacheWrite: 1_000_000, cacheWrite1h: 1_000_000, output: 0 },
     price,
   )
-  // 1M full + 1M at 0.1x + 1M at 1.25x + 1M at 2x = 4.35M billable input units at $5/M.
   assert.equal(Number(usd.toFixed(4)), 21.75)
   assert.equal(Number(usdWithoutCache.toFixed(4)), 20)
 })

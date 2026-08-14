@@ -11,11 +11,6 @@ const sessionsDir = (): string => GLib.build_filenamev([codexDir(), 'sessions'])
 
 export const codexInstalled = (): boolean => exists(codexDir()) || onPath('codex')
 
-/**
- * Session files inside the window, plus the newest few regardless of it. Codex has no usage
- * endpoint — its rate limits only exist as a snapshot inside the last session it ran — so a
- * short window with no Codex activity would otherwise show no limits at all.
- */
 const sessionFiles = (sinceMs: number): string[] => {
   const root = sessionsDir()
   if (!exists(root)) return []
@@ -39,8 +34,6 @@ const sessionFiles = (sinceMs: number): string[] => {
 const readSession = (path: string): string[] => {
   const text = readTextFile(path)
   if (text === null) return []
-  // Only these event kinds carry the numbers or the fork marker; dropping the rest here keeps
-  // JSON.parse off the multi-megabyte reasoning and tool-output lines that fill a rollout.
   return text
     .split('\n')
     .filter(

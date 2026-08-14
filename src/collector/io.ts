@@ -28,12 +28,6 @@ export const exists = (path: string): boolean => GLib.file_test(path, GLib.FileT
 
 export const onPath = (program: string): boolean => GLib.find_program_in_path(program) !== null
 
-/**
- * Runs a shell pipeline and returns stdout. The collector shells out to `find`, `grep` and
- * `xargs` because pre-filtering gigabytes of transcript to the few thousand lines that carry
- * token usage is exactly what they are for — doing the same scan in GJS would read the whole
- * tree into the process. Paths reach the shell through the environment, never interpolated.
- */
 export const runShell = (script: string, env: Record<string, string>): string => {
   const environment = [
     ...Object.entries(env).map(([key, value]) => `${key}=${value}`),
@@ -60,7 +54,6 @@ export type HttpResult = {
   body: string
 }
 
-/** Blocking GET. The collector is a short-lived subprocess, so nothing to keep responsive. */
 export const httpGet = (url: string, headers: Record<string, string>): HttpResult => {
   const session = new Soup.Session()
   session.timeout = 15
@@ -81,6 +74,5 @@ export const httpGet = (url: string, headers: Record<string, string>): HttpResul
   }
 }
 
-/** ISO 8601 without fractional seconds — the form both GNU find and bfs accept for `-newermt`. */
 export const isoSeconds = (epochMs: number): string =>
   new Date(epochMs).toISOString().replace(/\.\d+Z$/, 'Z')
