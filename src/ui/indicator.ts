@@ -43,7 +43,14 @@ const WINDOW_CHOICES: readonly { value: WindowDays; label: string }[] = [
 
 const ICONS_URI = import.meta.url.replace('/ui/indicator.js', '/icons/')
 
-const RESIZE_MS = 250
+// The shell slides a submenu open unless it is tall enough to need a scrollbar,
+// so Claude would animate and Codex would not. Drop it for both.
+const unanimatedSubmenu = (item: PopupMenu.PopupSubMenuMenuItem): void => {
+  item.setSubmenuShown = (open: boolean): void => {
+    if (open) item.menu.open(BoxPointer.PopupAnimation.NONE)
+    else item.menu.close(BoxPointer.PopupAnimation.NONE)
+  }
+}
 
 export type IndicatorHandlers = {
   onRefresh: () => void
@@ -68,7 +75,6 @@ export const UsageIndicator = GObject.registerClass(
     private codexIcon!: St.Icon
     private codexLabel!: St.Label
     private handlers!: IndicatorHandlers
-    private resizeSerial = 0
     private state: State = {
       snapshot: null,
       windowDays: 7,
@@ -129,33 +135,7 @@ export const UsageIndicator = GObject.registerClass(
     }
 
     private rebuild(): void {
-      const [width, height] = (this.menu as PopupMenu.PopupMenu).box.get_size()
       this.populate()
-      this.easeMenuFrom(width, height)
-    }
-
-    private easeMenuFrom(width: number, height: number): void {
-      const menu = this.menu as PopupMenu.PopupMenu
-      const box = menu.box
-      if (!menu.isOpen || width === 0 || height === 0) return
-
-      const [, naturalWidth] = box.get_preferred_width(-1)
-      const [, naturalHeight] = box.get_preferred_height(naturalWidth)
-      if (Math.round(naturalWidth) === Math.round(width) && Math.round(naturalHeight) === Math.round(height)) {
-        return
-      }
-
-      const serial = (this.resizeSerial += 1)
-      box.set_size(width, height)
-      box.ease({
-        width: naturalWidth,
-        height: naturalHeight,
-        duration: RESIZE_MS,
-        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-        onStopped: () => {
-          if (serial === this.resizeSerial) box.set_size(-1, -1)
-        },
-      })
     }
 
     private populate(): void {
@@ -221,6 +201,7 @@ export const UsageIndicator = GObject.registerClass(
         `${formatUsd(cost.usd)} · ${formatTokens(tokens)} tokens`,
         false,
       )
+      unanimatedSubmenu(summary)
       this.addCostDetails(summary.menu, provider)
       menu.addMenuItem(summary)
 
