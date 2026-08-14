@@ -43,6 +43,9 @@ const WINDOW_CHOICES: readonly { value: WindowDays; label: string }[] = [
 
 const ICONS_URI = import.meta.url.replace('/ui/indicator.js', '/icons/')
 
+/** Matches the shell's own submenu expansion, so a resize and an expansion read as one motion. */
+const RESIZE_MS = 250
+
 export type IndicatorHandlers = {
   onRefresh: () => void
   onWindowChange: (days: WindowDays) => void
@@ -66,6 +69,7 @@ export const UsageIndicator = GObject.registerClass(
     private codexIcon!: St.Icon
     private codexLabel!: St.Label
     private handlers!: IndicatorHandlers
+    private resizeSerial = 0
     private state: State = {
       snapshot: null,
       windowDays: 7,
@@ -126,6 +130,42 @@ export const UsageIndicator = GObject.registerClass(
     }
 
     private rebuild(): void {
+      const [width, height] = (this.menu as PopupMenu.PopupMenu).box.get_size()
+      this.populate()
+      this.easeMenuFrom(width, height)
+    }
+
+    /**
+     * A collection landing while the menu is open replaces every row, and the shell would apply
+     * the new size in one frame; easing out of the size the menu already had hides the jump.
+     */
+    private easeMenuFrom(width: number, height: number): void {
+      const menu = this.menu as PopupMenu.PopupMenu
+      const box = menu.box
+      if (!menu.isOpen || width === 0 || height === 0) return
+
+      const [, naturalWidth] = box.get_preferred_width(-1)
+      const [, naturalHeight] = box.get_preferred_height(naturalWidth)
+      if (Math.round(naturalWidth) === Math.round(width) && Math.round(naturalHeight) === Math.round(height)) {
+        return
+      }
+
+      const serial = (this.resizeSerial += 1)
+      box.set_size(width, height)
+      box.ease({
+        width: naturalWidth,
+        height: naturalHeight,
+        duration: RESIZE_MS,
+        mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        // Only the newest resize may hand the box back its natural size — an older one being
+        // superseded also stops here, and would otherwise cancel the size the new one is easing to.
+        onStopped: () => {
+          if (serial === this.resizeSerial) box.set_size(-1, -1)
+        },
+      })
+    }
+
+    private populate(): void {
       this.updatePanel()
       const menu = this.menu as PopupMenu.PopupMenu
       menu.removeAll()
