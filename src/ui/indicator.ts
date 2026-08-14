@@ -166,14 +166,6 @@ export const UsageIndicator = GObject.registerClass(
       )
       const range = snapshot === null ? null : formatRange(snapshot.since, nowMs)
       if (range !== null) menu.addMenuItem(note(range))
-      if (snapshot !== null && snapshot.providers.length > 0) {
-        menu.addMenuItem(
-          note(
-            'Cost is what this traffic would have cost at API list prices, read from the ' +
-              'session files on this machine — a subscription is flat-rate, so it is not a bill.',
-          ),
-        )
-      }
       menu.addMenuItem(this.footer(snapshot, nowMs))
     }
 
