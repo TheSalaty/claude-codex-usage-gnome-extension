@@ -55,15 +55,16 @@ than quietly pricing it at zero.
 
 ## Looking at the UI without touching your session
 
-`tools/shoot.sh` starts a headless GNOME Shell on a virtual monitor with a throwaway XDG home —
-so no other extension loads and the real desktop's dconf is untouched — enables this extension,
-drives the pointer through Mutter's RemoteDesktop interface and captures frames from its ScreenCast
-PipeWire stream:
+`tools/shoot.sh` re-executes itself on a private D-Bus session and starts a headless GNOME Shell
+on a virtual monitor with a throwaway XDG home — so no other extension loads and the real
+desktop's dconf and session bus are untouched — enables this extension, drives the pointer through
+Mutter's RemoteDesktop interface and captures frames from its ScreenCast PipeWire stream:
 
 ```sh
 make install
-dbus-run-session -- ./tools/shoot.sh --click 1095,12:menu --click 1030,308:expanded
+./tools/shoot.sh --click 1095,12:menu --click 1030,308:expanded
 # frames land in /tmp/aiu-shots/
+# docs/menu.png is the menu frame cropped to 560x690+840+0
 ```
 
 GNOME 49+ refuses `org.gnome.Shell.Screenshot` for headless sessions and no longer exposes an
