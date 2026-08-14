@@ -27,7 +27,7 @@
     <key name="panel-mode" enum="org.gnome.shell.extensions.tripmeter.panel-mode">
       <default>'percent'</default>
       <summary>What the panel button shows</summary>
-      <description>Either the tightest limit's percentage, the window's cost, or the icon alone.</description>
+      <description>Claude's session limit when available, otherwise the highest limit's percentage, the window's cost, or the icon alone.</description>
     </key>
     <key name="panel-limit-source" enum="org.gnome.shell.extensions.tripmeter.panel-limit-source">
       <default>'both'</default>
