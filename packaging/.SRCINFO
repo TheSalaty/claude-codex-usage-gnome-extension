@@ -12,7 +12,7 @@ pkgbase = tripmeter
 	source = tripmeter-1.2.0.tar.gz::https://github.com/TheSalaty/tripmeter/archive/v1.2.0.tar.gz
 	source = tripmeter-remind-enable
 	source = tripmeter-remind-enable.desktop
-	sha256sums = cea20b25423328a9cccb915d0595eb7e051c80f7741a1a2e4da78244b8c17166
+	sha256sums = 9bb4f7de7113ef1ab606379cf4458084cc9b05f648946b12dfb7cee2b7c0a873
 	sha256sums = 5cc0e150ce5d4caaea997337540bb57ce6b7965cf69a8611b5ff8f3fbcd78a10
 	sha256sums = adec82ff284b8f1e5dd047fd39d150676e0c7e55146b37259d7c2d6368994ed3
 
