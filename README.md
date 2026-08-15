@@ -25,6 +25,12 @@ Download the zip from the [latest release](https://github.com/TheSalaty/tripmete
 then run:
 
 ```sh
+cd ~/Downloads
+```
+
+Then run:
+
+```sh
 gnome-extensions install --force tripmeter@thesalaty.github.io.shell-extension.zip
 ```
 
